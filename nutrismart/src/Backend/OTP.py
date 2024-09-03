@@ -16,7 +16,7 @@ otp_storage = {}
 
 # Function to send SMS via GatewayAPI
 def send_sms(sender: str, msg_content: str, recipients: list[int]):
-    token = "Hrv9f_C4RjuRXs4gfu0kIEoQvx2DlE7K90x0U4CBOc5n6rWEiEcsixXFvM4BpRLS"
+    token = "ihkzgto1SX-6DjH95FqSppBa0ej_vkTu1vaZOWANV22bt-HnlcU1fmKfGuEDGkfF"
     payload = {
         "sender": sender,
         "message": msg_content,
@@ -80,4 +80,4 @@ def verify_otp():
         return jsonify({'error': 'Failed to verify OTP'}), 500
 
 if __name__ == "__main__":
-    app.run(port=5173)
+    app.run(host='0.0.0.0', port=5173, debug=False)
