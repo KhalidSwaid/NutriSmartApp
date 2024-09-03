@@ -116,7 +116,7 @@ function UserPage() {
                   onClick={handleCustomizeMealPlanButton}
                 >
                   <img
-                    src="../public/customize.jpg"
+                    src="/customize.jpg"
                     alt=""
                     className="w-8 h-8 mr-2 rounded-md stroke-1"
                   />
@@ -134,7 +134,7 @@ function UserPage() {
                   onClick={handleNutritionistChatButton}
                 >
                   <img
-                    src="../public/nutritionist.jpg"
+                    src="/nutritionist.jpg"
                     alt=""
                     className="w-8 h-8 mr-2 rounded-md stroke-1"
                   />
@@ -158,7 +158,7 @@ function UserPage() {
                   onClick={handleHomeButton}
                 >
                   <img
-                    src="../public/logout.jpg"
+                    src="/logout.jpg"
                     alt=""
                     className="w-8 h-8 mr-2 rounded-md stroke-1"
                   />
@@ -212,7 +212,7 @@ function UserPage() {
       <div className="relative max-w-xl mx-auto mt-15 flex justify-between gap-2 px-6">
         <div className="w-7/12 rounded overflow-hidden shadow-lg relative">
           <img
-            src="../public/chicken-salad.jpg"
+            src="/chicken-salad.jpg"
             alt="Chicken Salad image with description"
             className=" rounded-xl w-full h-40"
           />
@@ -240,7 +240,7 @@ function UserPage() {
 
         <div className="w-7/12 rounded overflow-hidden shadow-lg relative">
           <img
-            src="../public/pancake.jpg"
+            src="/pancake.jpg"
             alt="Chicken Salad image with description"
             className=" rounded-xl w-full h-40"
           />
