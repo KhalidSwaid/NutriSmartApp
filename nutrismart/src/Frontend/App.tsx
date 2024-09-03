@@ -15,8 +15,8 @@ import OTPVerification from "./OTPage";
 
 import NSChatBot from "./NSChatBot";
 
-import GuestPageController from "./GuestPageController";
-
+import GuestPageController from "../Controllers/GuestPageController";
+import UserPageController from "../Controllers/UserPageController";
 import NutritionistPage_ClientSide from "./NutritionistPage_ClientSide";
 
 const App: React.FC = () => {
@@ -46,6 +46,7 @@ const App: React.FC = () => {
             path="/nutritionistPage"
             element={<NutritionistPage_ClientSide />}
           />
+          <Route path="/userPageController" element={<UserPageController />} />
         </Routes>
       </UserProvider>
     </Router>

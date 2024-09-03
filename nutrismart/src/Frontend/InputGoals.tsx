@@ -9,7 +9,7 @@ function InputGoals() {
 
   const navigate = useNavigate();
   const handleBackButton = () => {
-    navigate("/userPage");
+    navigate("/userPageController");
   };
 
   // Function to toggle the navbar visibility

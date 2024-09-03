@@ -79,7 +79,7 @@ function UserLoginPage() {
           setLoading(false);
           setSuccessLoginMessage("Welcome!");
           setTimeout(() => {
-            navigate("/userPage");
+            navigate("/userPageController");
           }, 1000);
 
           // Navigate to user page

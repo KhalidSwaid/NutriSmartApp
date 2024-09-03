@@ -1,5 +1,5 @@
-import GuestPage from "./GuestPage";
-import NSChatBot from "./NSChatBot";
+import GuestPage from "../Frontend/GuestPage";
+import NSChatBot from "../Frontend/NSChatBot";
 
 function GuestPageController() {
   return (
