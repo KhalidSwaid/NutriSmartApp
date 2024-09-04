@@ -5,6 +5,7 @@ import { useUserContext } from "./UserContext";
 import {
   checkUserOnlineStatus,
   setUserOnlineStatus,
+  resetUserOnlineStatus,
 } from "../Backend/CheckOnlineUser";
 
 function UserPage() {
@@ -50,8 +51,17 @@ function UserPage() {
 
   // Show an alert only when userCount is 1 and reset the count afterward
 
-  const handleHomeButton = () => {
-    navigate("/");
+  const handleHomeButton = async () => {
+    try {
+      // Reset the user's online status
+      await resetUserOnlineStatus(userInfo.id);
+      console.log(`User ${userInfo.id} is now offline.`);
+
+      // Navigate to the home page
+      navigate("/");
+    } catch (error) {
+      console.error("Error resetting user online status:", error);
+    }
   };
 
   const handleInsertImageButton = () => {
