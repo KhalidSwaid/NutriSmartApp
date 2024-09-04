@@ -40,6 +40,7 @@ export const saveUserToDatabase = async (userInfo: UserInfo): Promise<void> => {
         password: userInfo.password,
         phoneNumber: userInfo.phoneNumber,
         isOnline: userInfo.isOnline,
+        id: userInfo.id,
       },
     });
   } catch (error) {

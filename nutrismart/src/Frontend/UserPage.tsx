@@ -2,19 +2,53 @@ import { useEffect, useRef } from "react";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useUserContext } from "./UserContext";
+import {
+  checkUserOnlineStatus,
+  setUserOnlineStatus,
+} from "../Backend/CheckOnlineUser";
 
 function UserPage() {
   const navigate = useNavigate();
   const { userInfo } = useUserContext();
   const hasAlertShown = useRef(false);
 
+  // Check if the user is online, show an alert if not, and update status to online
   useEffect(() => {
-    if (!hasAlertShown.current) {
-      const userName = userInfo.email.split("@")[0];
-      alert(`Hello ${userName}`);
-      hasAlertShown.current = true;
-    }
-  }, [userInfo.email]);
+    const checkAndAlert = async () => {
+      try {
+        const isOnline = await checkUserOnlineStatus(userInfo.id); // Check if the user is online
+        console.log("isOnline:", isOnline);
+
+        if (!isOnline && !hasAlertShown.current) {
+          // Show alert only if the user is not online
+          const userName = userInfo.email.split("@")[0];
+          console.log(userInfo.email);
+          alert(`Hello ${userName}`); // Show the alert
+          hasAlertShown.current = true; // Mark alert as shown
+
+          console.log("User INFO:", userInfo);
+
+          // Update the user's online status to true
+          await setUserOnlineStatus(userInfo.id);
+          console.log(`User ${userInfo.id} is now set to online.`);
+        }
+      } catch (error) {
+        console.error("Error checking or updating online status:", error);
+      }
+    };
+
+    checkAndAlert(); // Call the async function
+  }, [userInfo.id, userInfo.email]);
+
+  // useEffect(() => {
+  //   if (!hasAlertShown.current) {
+  //     const userName = userInfo.email.split("@")[0];
+  //     alert(`Hello ${userName}`);
+  //     hasAlertShown.current = true;
+  //   }
+  // }, [userInfo.email]);
+
+  // Show an alert only when userCount is 1 and reset the count afterward
 
   const handleHomeButton = () => {
     navigate("/");
