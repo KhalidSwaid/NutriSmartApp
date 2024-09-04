@@ -1,17 +1,25 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { addCondition } from "../Backend/MedicalConditionsManager";
 
 function InputMedicalConditions() {
   const navigate = useNavigate();
+
+  // Function to handle the "Back" button click
   const handleBackButton = () => {
     navigate("/userPage");
   };
 
   const [activeButton, setActiveButton] = useState<number | null>(null);
-  const handleButtonClick = (index: number) => {
+
+  // Function to handle condition button clicks
+  const handleButtonClick = (index: number, condition: string) => {
     setActiveButton((prevActiveButton) =>
       prevActiveButton === index ? null : index,
     );
+
+    // Call the function to add the condition to the array in Backend
+    addCondition(condition);
   };
 
   return (
@@ -96,7 +104,7 @@ function InputMedicalConditions() {
                 ? "bg-blue-100 text-blue-700"
                 : "bg-blue-200 text-blue-900"
             } hover:bg-blue-100`}
-            onClick={() => handleButtonClick(index)}
+            onClick={() => handleButtonClick(index, condition)}
           >
             {condition}
           </button>
