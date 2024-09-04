@@ -7,6 +7,7 @@ import { useNavigate } from "react-router-dom";
 import { useUserContext } from "./UserContext";
 // import { UserInfo } from "../types/UserInfo";
 import { checkUserExists } from "../Backend/DatabaseUtils";
+import { saveUserToDatabase } from "../Backend/DatabaseUtils";
 
 const Login: React.FC = () => {
   const navigate = useNavigate();
@@ -17,6 +18,7 @@ const Login: React.FC = () => {
   const [errorMessage, setErrorMessage] = useState<string>("");
   const [phoneNumber, setPhoneNumber] = useState<string>("");
   const [id, setId] = useState<string>("");
+  const [loading, setLoading] = useState(false);
 
   const handleGuestButton = () => {
     navigate("/guestPageController");
@@ -99,12 +101,21 @@ const Login: React.FC = () => {
       //   email,
       //   password,
       // );
-      const userInfo = { email, password, phoneNumber, id };
+      const userInfo = { email, password, phoneNumber, id, isOnline: false };
 
       setUserInfo(userInfo);
       // await saveUserToDatabase(userInfo);
 
-      navigate("/otpPage");
+      // Save user information to the database using the imported function
+      await saveUserToDatabase(userInfo);
+
+      // navigate("/otpPage");
+      setTimeout(() => {
+        setLoading(true);
+        setTimeout(() => {
+          navigate("/login");
+        }, 1000);
+      }, 2000);
     } catch (error) {
       console.error("Error signing up:", error);
       setErrorMessage("An error occurred during sign-up");
@@ -176,12 +187,39 @@ const Login: React.FC = () => {
       </div>
 
       {errorMessage && <p className="text-red-500 mb-5">{errorMessage}</p>}
-      <button
+      {/* <button
         type="button"
         className="mb-5 w-full text-white bg-gray-800 hover:bg-gray-900 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 dark:bg-gray-800 dark:hover:bg-gray-700 dark:focus:ring-gray-700 dark:border-gray-700"
         onClick={handleSignUpWithEmailButton}
       >
         Sign up with email
+      </button>
+      <div className="mt-6 px-10 flex justify-center items-center">
+        {loading && (
+          <div
+            className="animate-spin inline-block h-6 w-6 border-[3px] border-current border-t-transparent text-black rounded-full"
+            role="status"
+            aria-label="loading"
+          >
+            <span className="sr-only">Loading...</span>
+          </div>
+        )}
+      </div> */}
+      <button
+        type="button"
+        className="mb-5 w-full flex items-center justify-center text-white bg-gray-800 hover:bg-gray-900 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 dark:bg-gray-800 dark:hover:bg-gray-700 dark:focus:ring-gray-700 dark:border-gray-700"
+        onClick={handleSignUpWithEmailButton}
+      >
+        Sign up with email
+        {loading && (
+          <div
+            className="animate-spin inline-block h-5 w-5 border-[3px] border-current border-t-transparent text-white rounded-full ml-2"
+            role="status"
+            aria-label="loading"
+          >
+            <span className="sr-only">Loading...</span>
+          </div>
+        )}
       </button>
       <div className="flex items-center justify-center mb-5">
         <hr className="mt-1 h-px bg-gray-200 border-1 dark:bg-gray-200 flex-grow ml-4 mr-1" />

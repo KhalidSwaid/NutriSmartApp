@@ -3,4 +3,5 @@ export interface UserInfo {
   password: string;
   phoneNumber: string;
   id: string;
+  isOnline: boolean;
 }

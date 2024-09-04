@@ -17,6 +17,7 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({
     password: "",
     phoneNumber: "",
     id: "",
+    isOnline: false,
   });
 
   return (
