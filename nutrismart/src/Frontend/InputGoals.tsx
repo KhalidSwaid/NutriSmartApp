@@ -65,14 +65,14 @@ function InputGoals() {
 
       <div className="relative px-8 py-3 mb-1">
         <img
-          src="vegetables.jpg"
+          src="/vegetables.jpg"
           alt=""
           className="block w-full h-auto rounded-md blur-sm"
         />
         <div className="absolute inset-0 flex items-center justify-center">
           <button className=" text-black py-2 px-4 rounded-md">
             <img
-              src="../public/insertimage.jpg"
+              src="/insertimage.jpg"
               alt=""
               className="rounded w-20"
             />
