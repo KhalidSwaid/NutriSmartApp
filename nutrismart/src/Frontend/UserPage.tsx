@@ -16,6 +16,7 @@ function UserPage() {
   // Check if the user is online, show an alert if not, and update status to online
   useEffect(() => {
     const checkAndAlert = async () => {
+      console.log("USER INFO:", userInfo);
       try {
         const isOnline = await checkUserOnlineStatus(userInfo.id); // Check if the user is online
         console.log("isOnline:", isOnline);

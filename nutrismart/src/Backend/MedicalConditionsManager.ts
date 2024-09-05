@@ -67,3 +67,38 @@ export const saveSelectedConditionsToFirestore = async (userId: string) => {
     console.error("Error saving medical conditions to Firestore:", error);
   }
 };
+
+// Function to save illustrations to Firestore
+export const saveIllustrationsToFirestore = async (
+  userId: string,
+  illustrations: string,
+) => {
+  try {
+    // Reference to the 'usersMedicalConditions' document in the 'users' collection
+    const userConditionsRef = doc(db, "users", "usersMedicalConditions");
+
+    // Get the current data for 'usersMedicalConditions'
+    const docSnapshot = await getDoc(userConditionsRef);
+
+    if (docSnapshot.exists()) {
+      // If the document already exists, update the user's illustrations
+      await updateDoc(userConditionsRef, {
+        [`${userId}.illustrations`]: illustrations, // Use dot notation to update nested field
+      });
+    } else {
+      // If the document does not exist, create it with the user's illustrations
+      await setDoc(userConditionsRef, {
+        [userId]: {
+          id: userId,
+          illustrations: illustrations, // Save the illustrations
+        },
+      });
+    }
+
+    console.log(
+      `Illustrations for user ${userId} saved to Firestore successfully.`,
+    );
+  } catch (error) {
+    console.error("Error saving illustrations to Firestore:", error);
+  }
+};

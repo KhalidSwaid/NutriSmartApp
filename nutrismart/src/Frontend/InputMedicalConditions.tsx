@@ -1,16 +1,21 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { addCondition } from "../Backend/MedicalConditionsManager";
+import {
+  addCondition,
+  saveIllustrationsToFirestore,
+} from "../Backend/MedicalConditionsManager";
+import { useUserContext } from "./UserContext";
 
 function InputMedicalConditions() {
   const navigate = useNavigate();
+  const { userInfo } = useUserContext();
+  const [activeButton, setActiveButton] = useState<number | null>(null);
+  const [illustrations, setIllustrations] = useState<string>("");
 
   // Function to handle the "Back" button click
   const handleBackButton = () => {
     navigate("/userPage");
   };
-
-  const [activeButton, setActiveButton] = useState<number | null>(null);
 
   // Function to handle condition button clicks
   const handleButtonClick = (index: number, condition: string) => {
@@ -19,7 +24,24 @@ function InputMedicalConditions() {
     );
 
     // Call the function to add the condition to the array in Backend
-    addCondition(condition);
+    addCondition(condition, userInfo.id);
+  };
+
+  // Function to handle illustrations input change
+  const handleIllustrationsChange = (
+    event: React.ChangeEvent<HTMLTextAreaElement>,
+  ) => {
+    setIllustrations(event.target.value); // Update state with the value of textarea
+  };
+
+  // Function to handle the "Submit" button click
+  const handleSubmit = async () => {
+    try {
+      await saveIllustrationsToFirestore(userInfo.id, illustrations); // Save illustrations to Firestore
+      console.log("Illustrations saved successfully.");
+    } catch (error) {
+      console.error("Error saving illustrations:", error);
+    }
   };
 
   return (
@@ -130,6 +152,8 @@ function InputMedicalConditions() {
               rows={6}
               className="w-full block p-2.5 text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300"
               placeholder="Write your medical conditions here..."
+              value={illustrations}
+              onChange={handleIllustrationsChange}
             ></textarea>
           </div>
         </div>
@@ -139,6 +163,7 @@ function InputMedicalConditions() {
         <button
           type="button"
           className="mb-3 w-3/4 text-white bg-gray-800 hover:bg-gray-900 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 dark:bg-gray-800 dark:hover:bg-gray-700 dark:focus:ring-gray-700 dark:border-gray-700"
+          onClick={handleSubmit}
         >
           Submit
         </button>
