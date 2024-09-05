@@ -1,0 +1,69 @@
+import { doc, setDoc, getDoc, updateDoc, arrayUnion } from "firebase/firestore";
+import { db } from "../Frontend/firebase";
+
+// Initialize an array to hold selected medical conditions
+let selectedConditions: string[] = [];
+
+// Function to add a condition to the array
+export const addCondition = async (condition: string, userId: string) => {
+  if (!selectedConditions.includes(condition)) {
+    // Prevent duplicates
+    selectedConditions.push(condition);
+    console.log(`Condition added: ${condition}`);
+    // Save updated conditions to Firestore
+    await saveSelectedConditionsToFirestore(userId);
+  } else {
+    console.log(`Condition already exists: ${condition}`);
+  }
+};
+
+//Here I Have to save selectedConditions to database, under users collection, under usersMedicalConditions,
+//We will save for each user an array that have the medical condition for the user, and array name
+//will be the user id like this:
+//"111222333": [Obesity, Cardiovascular disease, ...]
+
+// Function to get the current list of selected conditions
+export const getSelectedConditions = (): string[] => {
+  return selectedConditions;
+};
+
+// (Optional) Function to clear all selected conditions
+export const clearSelectedConditions = () => {
+  selectedConditions = [];
+  console.log("Selected conditions cleared.");
+};
+
+// Function to save selected conditions to Firestore
+export const saveSelectedConditionsToFirestore = async (userId: string) => {
+  try {
+    // Reference to the 'usersMedicalConditions' document in the 'users' collection
+    const userConditionsRef = doc(db, "users", "usersMedicalConditions");
+
+    // Get the current data for 'usersMedicalConditions'
+    const docSnapshot = await getDoc(userConditionsRef);
+
+    if (docSnapshot.exists()) {
+      // If the document already exists, update the user's conditions array
+      await updateDoc(userConditionsRef, {
+        [userId]: {
+          id: userId,
+          medicalConditions: arrayUnion(...selectedConditions),
+        },
+      });
+    } else {
+      // If the document does not exist, create it with the initial user's conditions
+      await setDoc(userConditionsRef, {
+        [userId]: {
+          id: userId,
+          medicalConditions: selectedConditions,
+        },
+      });
+    }
+
+    console.log(
+      `Medical conditions for user ${userId} saved to Firestore successfully.`,
+    );
+  } catch (error) {
+    console.error("Error saving medical conditions to Firestore:", error);
+  }
+};
