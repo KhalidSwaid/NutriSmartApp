@@ -3,6 +3,8 @@ import { useNavigate } from "react-router-dom";
 import { Question } from "../types/Question";
 import { useUserContext } from "../Frontend/UserContext";
 import { UpdateUserQuestions } from "../Backend/UpdateUserQuestions";
+import { doc, getDoc } from "firebase/firestore";
+import { db } from "../Frontend/firebase";
 
 const NutritionistPage_ClientSide: React.FC = () => {
   const navigate = useNavigate();
@@ -13,8 +15,63 @@ const NutritionistPage_ClientSide: React.FC = () => {
   const [containerHeight, setContainerHeight] = useState(0); // Start height
   const { userInfo } = useUserContext();
 
+  // Function to fetch user questions from Firestore and set them to the state
+  const fetchUserQuestionsFromFirestore = async () => {
+    try {
+      // Reference to the 'usersQuestions' document in the 'questions' collection
+      const usersQuestionsRef = doc(db, "questions", "usersQuestions");
+
+      // Get the document snapshot
+      const docSnapshot = await getDoc(usersQuestionsRef);
+
+      if (docSnapshot.exists()) {
+        const data = docSnapshot.data(); // Get the data of the document
+        const userId = userInfo.email.split("@")[0]; // Extract userId from email before the '@' symbol
+
+        console.log("Fetched Data:", data); // Debugging: print the fetched data
+
+        if (data[userId]) {
+          const userQuestionsObject = data[userId] as Record<string, any>; // Assert the type as an object
+
+          // Extract questions from nested structure
+          const userQuestionsArray: Question[] = Object.entries(
+            userQuestionsObject,
+          ).map(([questionKey, questionData]) => {
+            console.log(questionKey);
+            const questionDataObject = questionData as Record<string, any>; // Assert as an object
+            const questionTitleKey = Object.keys(questionDataObject)[0]; // Get the title key
+            const questionDetails = questionDataObject[questionTitleKey]; // Get the question details
+            return {
+              title: questionDetails.title,
+              email: questionDetails.email,
+              content: questionDetails.content,
+              answer: questionDetails.answer,
+            };
+          });
+
+          console.log("User Questions Array:", userQuestionsArray); // Debugging: print user's questions
+
+          setQuestions(userQuestionsArray); // Set the questions state with the loaded questions
+        } else {
+          console.log(`No questions found for user ID: ${userId}`);
+          setQuestions([]); // Clear the questions state if no questions found for the user
+        }
+      } else {
+        console.log("No such document exists!");
+        setQuestions([]); // Clear the questions state if no document exists
+      }
+    } catch (error) {
+      console.error("Error fetching user questions from Firestore:", error);
+    }
+  };
+
+  // Call the function when the component mounts
+  useEffect(() => {
+    fetchUserQuestionsFromFirestore(); // Fetch the data when the component mounts
+  }, []);
+
   const handleBackButton = () => {
-    navigate("/userPage"); // Replace '/userPage' with your desired route
+    navigate("/userPageController"); // Replace '/userPage' with your desired route
   };
 
   useEffect(() => {
