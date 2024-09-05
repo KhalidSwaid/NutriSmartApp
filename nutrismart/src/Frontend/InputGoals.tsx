@@ -65,7 +65,7 @@ function InputGoals() {
 
       <div className="relative px-8 py-3 mb-1">
         <img
-          src="../public/vegetables.jpg"
+          src="vegetables.jpg"
           alt=""
           className="block w-full h-auto rounded-md blur-sm"
         />
