@@ -3,7 +3,10 @@ import { useNavigate } from "react-router-dom";
 // import { collection, query, where, getDocs } from "firebase/firestore";
 // import { db, auth } from "./firebase"; // Assuming you have initialized your Firebase app and exported the 'db' instance
 // import { signInWithEmailAndPassword } from "firebase/auth";
-import { checkUserExists } from "../Backend/DatabaseUtils";
+import {
+  checkUserExists,
+  checkCorrectPassword,
+} from "../Backend/DatabaseUtils";
 import { useUserContext } from "./UserContext";
 // import { Spinner } from "@material-tailwind/react";
 
@@ -66,11 +69,15 @@ function UserLoginPage() {
     try {
       // Check if the user exists in the database
       const userExists = await checkUserExists(email);
+      const correctPassword = await checkCorrectPassword(email, password);
 
       if (userExists) {
         // Sign in the user with email and password
         // await signInWithEmailAndPassword(auth, email, password);
-
+        if (!correctPassword) {
+          setErrorMessage("Incorrect Password!");
+          return;
+        }
         const userdata = userExists;
         setUserInfo(userdata);
         console.log("printing userdata from UserLoginPage.tsx", userdata);
