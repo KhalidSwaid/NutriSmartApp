@@ -1,26 +1,66 @@
-// import { useState } from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 function InputGoals() {
-  // State to manage the visibility of the navbar
-  // const [isNavbarVisible, setIsNavbarVisible] = useState(false);
-  // // const [activeButton, setActiveButton] = useState("search");
-  // const [isOpenedHamMenu, setIsOpenedHamMenu] = useState(false);
-
   const navigate = useNavigate();
+
+  // States to manage the selected fil, prediction results, and errors
+  const [file, setFile] = useState<File | null>(null);
+  const [predictions, setPredictions] = useState<string[]>([]);
+  const [error, setError] = useState<string | null>(null);
+
   const handleBackButton = () => {
     navigate("/userPageController");
   };
 
-  // Function to toggle the navbar visibility
-  // const toggleNavbar = () => {
-  //   setIsNavbarVisible(!isNavbarVisible);
-  //   setIsOpenedHamMenu(!isOpenedHamMenu);
-  // };
+  // Handle file selection
+  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    if (event.target.files && event.target.files[0]) {
+      setFile(event.target.files[0]);
+      setError(null); // Clear any existing error
+    }
+  };
 
-  // const handleButtonClick = (button: string) => {
-  //   setActiveButton(button);
-  // };
+  // Handle drag-and-drop functionality
+  const handleDrop = (event: React.DragEvent<HTMLDivElement>) => {
+    event.preventDefault();
+    if (event.dataTransfer.files && event.dataTransfer.files[0]) {
+      setFile(event.dataTransfer.files[0]);
+      setError(null); // Clear any existing error
+    }
+  };
+
+  const handleDragOver = (event: React.DragEvent<HTMLDivElement>) => {
+    event.preventDefault(); // Prevent the browser's default behavior
+  };
+
+  // Handle form submission to upload image and get predictions
+  const handleUpload = async () => {
+    if (!file) {
+      setError("Please select a file to upload.");
+      return;
+    }
+
+    const formData = new FormData();
+    formData.append("file", file);
+
+    try {
+      const response = await fetch("http://localhost:5000/upload", {
+        method: "POST",
+        body: formData,
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to upload file.");
+      }
+
+      const data = await response.json(); // Parse the JSON response
+      setPredictions(data.predictions); // Update predictions state
+      setError(null); // Clear any errors
+    } catch (err: any) {
+      setError(err.message);
+    }
+  };
 
   return (
     <div className="relative bg-zinc-50  text-center text-surface dark:text-black pb-1 w-full">
@@ -63,23 +103,68 @@ function InputGoals() {
         </button>
       </nav>
 
-      <div className="relative px-8 py-3 mb-1">
+      {/* Image Upload Section */}
+      <div className="relative px-24 py-3 mb-1">
         <img
-          src="../public/vegetables.jpg"
+          src="/vegetables.jpg"
           alt=""
           className="block w-full h-auto rounded-md blur-sm"
         />
-        <div className="absolute inset-0 flex items-center justify-center">
-          <button className=" text-black py-2 px-4 rounded-md">
+        <div
+          className="absolute inset-0 flex items-center justify-center border-2 border-dashed border-gray-300 rounded-md"
+          onDrop={handleDrop}
+          onDragOver={handleDragOver}
+        >
+          <input
+            type="file"
+            accept="image/*"
+            onChange={handleFileChange}
+            className="hidden" // Hide the default file input
+            id="fileInput"
+            capture="environment" // Allows users to use the camera on mobile
+          />
+          <label
+            htmlFor="fileInput"
+            className="text-black py-2 px-4 rounded-md cursor-pointer flex flex-col items-center"
+          >
+            {" "}
+            <img src="/insertimage.jpg" alt="" className="rounded w-20 px-5" />
+            <span>Insert Image</span>
+          </label>
+          {/* <button className=" text-black py-2 px-4 rounded-md">
             <img
               src="../public/insertimage.jpg"
               alt=""
               className="rounded w-20"
             />
             Insert Image
-          </button>
+          </button> */}
         </div>
       </div>
+
+      {/* Display error if exists */}
+      {error && <p style={{ color: "red" }}>{error}</p>}
+
+      {/* Button to upload image and get predictions */}
+      <button
+        type="button"
+        onClick={handleUpload}
+        className="mb-3 w-3/4 text-white bg-gray-800 hover:bg-gray-900 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 dark:bg-gray-800 dark:hover:bg-gray-700 dark:focus:ring-gray-700 dark:border-gray-700"
+      >
+        Upload and Predict
+      </button>
+
+      {/* Display predictions if available */}
+      {predictions.length > 0 && (
+        <div>
+          <h3>Predictions:</h3>
+          <ul>
+            {predictions.map((prediction, index) => (
+              <li key={index}>{prediction}</li>
+            ))}
+          </ul>
+        </div>
+      )}
 
       <div className="flex flex-col  justify-center items-center">
         <label
