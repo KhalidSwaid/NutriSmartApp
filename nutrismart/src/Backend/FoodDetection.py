@@ -1,5 +1,6 @@
 # Importing necessary libraries
 from flask import Flask, request, jsonify  # Changed render_template to jsonify
+from flask_cors import CORS
 import os
 import numpy as np
 import cv2 as cv
@@ -7,6 +8,7 @@ import tensorflow as tf
 
 # Initializing Flask Application
 app = Flask(__name__)
+CORS(app)
 
 # Define a route for handling file uploads and predictions
 @app.route('/upload', methods=['POST'])

@@ -6,6 +6,7 @@ function InputGoals() {
 
   // States to manage the selected fil, prediction results, and errors
   const [file, setFile] = useState<File | null>(null);
+  const [preview, setPreview] = useState<string | null>(null);
   const [predictions, setPredictions] = useState<string[]>([]);
   const [error, setError] = useState<string | null>(null);
 
@@ -16,8 +17,13 @@ function InputGoals() {
   // Handle file selection
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files && event.target.files[0]) {
-      setFile(event.target.files[0]);
+      const selectedFile = event.target.files[0];
+      setFile(selectedFile);
       setError(null); // Clear any existing error
+
+      // Generate a preview URL for the selected image
+      const previewUrl = URL.createObjectURL(selectedFile);
+      setPreview(previewUrl);
     }
   };
 
@@ -25,8 +31,13 @@ function InputGoals() {
   const handleDrop = (event: React.DragEvent<HTMLDivElement>) => {
     event.preventDefault();
     if (event.dataTransfer.files && event.dataTransfer.files[0]) {
-      setFile(event.dataTransfer.files[0]);
+      const selectedFile = event.dataTransfer.files[0];
+      setFile(selectedFile);
       setError(null); // Clear any existing error
+
+      // Generate a preview URL for the selected image
+      const previewUrl = URL.createObjectURL(selectedFile);
+      setPreview(previewUrl);
     }
   };
 
@@ -104,7 +115,7 @@ function InputGoals() {
       </nav>
 
       {/* Image Upload Section */}
-      <div className="relative px-24 py-3 mb-1">
+      <div className="relative px-24 py-3 mb-2">
         <img
           src="/vegetables.jpg"
           alt=""
@@ -125,11 +136,17 @@ function InputGoals() {
           />
           <label
             htmlFor="fileInput"
-            className="text-black py-2 px-4 rounded-md cursor-pointer flex flex-col items-center"
+            className="text-black py-1 px-4 rounded-md cursor-pointer flex flex-col items-center"
           >
             {" "}
-            <img src="/insertimage.jpg" alt="" className="rounded w-20 px-5" />
-            <span>Insert Image</span>
+            <img
+              src={preview || "/insertimage.jpg"}
+              alt=""
+              className={`block mx-auto rounded-md ${
+                preview ? "w-72 py-5 px-5 " : "w-20"
+              }`}
+            />
+            {!preview && <span>Insert Image</span>}
           </label>
           {/* <button className=" text-black py-2 px-4 rounded-md">
             <img
@@ -149,7 +166,7 @@ function InputGoals() {
       <button
         type="button"
         onClick={handleUpload}
-        className="mb-3 w-3/4 text-white bg-gray-800 hover:bg-gray-900 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 dark:bg-gray-800 dark:hover:bg-gray-700 dark:focus:ring-gray-700 dark:border-gray-700"
+        className="mt-5 mb-3 w-3/4 text-white bg-gray-800 hover:bg-gray-900 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 dark:bg-gray-800 dark:hover:bg-gray-700 dark:focus:ring-gray-700 dark:border-gray-700"
       >
         Upload and Predict
       </button>
