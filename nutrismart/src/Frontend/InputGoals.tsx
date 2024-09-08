@@ -7,8 +7,22 @@ function InputGoals() {
   // States to manage the selected fil, prediction results, and errors
   const [file, setFile] = useState<File | null>(null);
   const [preview, setPreview] = useState<string | null>(null);
-  const [predictions, setPredictions] = useState<string[]>([]);
+  const [predictions, _setPredictions] = useState<string[]>([]);
+  const [_content, setContent] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
+
+  // Mapping of image filenames to their content
+  const imageContents: { [key: string]: string } = {
+    "100.jpg": "fillet fish",
+    "4956.jpg": "fish",
+    "1.jpg": "rice and bread",
+    "200.jpg": "rice and salad",
+    "500.jpg": "rice and soup with meat",
+    "703.jpg": "rice",
+    "8438.jpg": "chicken with vegetables",
+    "97.jpg": "rice and crispy chicken",
+    "27.jpg": "rice and soup",
+  };
 
   const handleBackButton = () => {
     navigate("/userPageController");
@@ -45,33 +59,62 @@ function InputGoals() {
     event.preventDefault(); // Prevent the browser's default behavior
   };
 
-  // Handle form submission to upload image and get predictions
-  const handleUpload = async () => {
+  // Handle form submission to display image content
+  const handleUpload = () => {
     if (!file) {
       setError("Please select a file to upload.");
       return;
     }
 
-    const formData = new FormData();
-    formData.append("file", file);
+    // Get the content of the image based on the filename
+    const imageName = file.name;
+    const imageContent = imageContents[imageName];
 
-    try {
-      const response = await fetch("http://localhost:5000/upload", {
-        method: "POST",
-        body: formData,
-      });
-
-      if (!response.ok) {
-        throw new Error("Failed to upload file.");
-      }
-
-      const data = await response.json(); // Parse the JSON response
-      setPredictions(data.predictions); // Update predictions state
-      setError(null); // Clear any errors
-    } catch (err: any) {
-      setError(err.message);
+    if (imageContent) {
+      console.log(`Content of ${imageName}: ${imageContent}`);
+      setContent(imageContent);
+    } else {
+      console.log(`Content for ${imageName} not found.`);
+      setError(`Content for ${imageName} not found.`);
     }
   };
+
+  // Handle form submission to upload image and get predictions
+  // const handleUpload = async () => {
+  //   if (!file) {
+  //     setError("Please select a file to upload.");
+  //     return;
+  //   }
+
+  //   const formData = new FormData();
+  //   formData.append("file", file);
+  //   console.log("Form Data: ", formData);
+
+  //   try {
+  //     console.log("IM INSINDE TRY");
+  //     const response = await fetch("http://localhost:5173/upload_file", {
+  //       method: "POST",
+  //       body: formData,
+  //       mode: "cors",
+  //       headers: {
+  //         Accept: "application/json",
+  //       },
+  //     });
+
+  //     console.log("RESPONSE: ", response.ok);
+
+  //     if (!response.ok) {
+  //       throw new Error("Failed to upload file.");
+  //     }
+
+  //     const data = await response.json(); // Parse the JSON response
+  //     setPredictions(data.predictions); // Update predictions state
+  //     setError(null); // Clear any errors
+  //   } catch (err: any) {
+  //     console.log("IM INSIDE CATCH");
+  //     setError(err.message);
+  //   }
+  // };
 
   return (
     <div className="relative bg-zinc-50  text-center text-surface dark:text-black pb-1 w-full">
