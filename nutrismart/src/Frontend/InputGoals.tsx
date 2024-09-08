@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { getContent, handleIllustrations } from "../Backend/ContentProcessor";
 
 function InputGoals() {
   const navigate = useNavigate();
@@ -9,19 +10,25 @@ function InputGoals() {
   const [preview, setPreview] = useState<string | null>(null);
   const [predictions, _setPredictions] = useState<string[]>([]);
   const [_content, setContent] = useState<string | null>(null);
+  const [illustration, setIllustration] = useState<string>("");
   const [error, setError] = useState<string | null>(null);
+
+  const [calories, setCalories] = useState<string>("");
+  const [protein, setProtein] = useState<string>("");
+  const [carbs, setCarbs] = useState<string>("");
+  const [sugar, setSugar] = useState<string>("");
 
   // Mapping of image filenames to their content
   const imageContents: { [key: string]: string } = {
     "100.jpg": "fillet fish",
     "4956.jpg": "fish",
-    "1.jpg": "rice and bread",
-    "200.jpg": "rice and salad",
-    "500.jpg": "rice and soup with meat",
+    "1.jpg": "rice, bread",
+    "200.jpg": "rice, salad",
+    "500.jpg": "rice, soup with meat",
     "703.jpg": "rice",
     "8438.jpg": "chicken with vegetables",
-    "97.jpg": "rice and crispy chicken",
-    "27.jpg": "rice and soup",
+    "97.jpg": "rice, crispy chicken",
+    "27.jpg": "rice, soup",
   };
 
   const handleBackButton = () => {
@@ -59,7 +66,7 @@ function InputGoals() {
     event.preventDefault(); // Prevent the browser's default behavior
   };
 
-  // Handle form submission to display image content
+  // Handle form submission to display image content and send it to the backend
   const handleUpload = () => {
     if (!file) {
       setError("Please select a file to upload.");
@@ -73,6 +80,13 @@ function InputGoals() {
     if (imageContent) {
       console.log(`Content of ${imageName}: ${imageContent}`);
       setContent(imageContent);
+
+      // Split the content by comma and send to the backend
+      const contentArray = imageContent.split(",").map((item) => item.trim());
+      console.log("Content Array:", contentArray);
+
+      // Call the backend function to save the content
+      getContent(imageName, contentArray);
     } else {
       console.log(`Content for ${imageName} not found.`);
       setError(`Content for ${imageName} not found.`);
@@ -115,6 +129,42 @@ function InputGoals() {
   //     setError(err.message);
   //   }
   // };
+
+  // Handle illustration input change
+  const handleIllustrationChange = (
+    event: React.ChangeEvent<HTMLTextAreaElement>,
+  ) => {
+    setIllustration(event.target.value);
+  };
+
+  // Handle input changes for Calories, Protein, Carbs, and Sugar
+  const handleCaloriesChange = (event: React.ChangeEvent<HTMLInputElement>) =>
+    setCalories(event.target.value);
+  const handleProteinChange = (event: React.ChangeEvent<HTMLInputElement>) =>
+    setProtein(event.target.value);
+  const handleCarbsChange = (event: React.ChangeEvent<HTMLInputElement>) =>
+    setCarbs(event.target.value);
+  const handleSugarChange = (event: React.ChangeEvent<HTMLInputElement>) =>
+    setSugar(event.target.value);
+
+  // Handle illustration submission and input fields
+  const handleIllustrationSubmit = () => {
+    if (!illustration) {
+      setError("Please provide some content in the illustration.");
+      return;
+    }
+
+    // Collect all the input field values
+    const nutritionInfo = {
+      Calories: calories,
+      Protein: protein,
+      Carbs: carbs,
+      Sugar: sugar,
+    };
+
+    // Call the backend function to handle the illustration content and nutrition info
+    handleIllustrations(illustration, nutritionInfo);
+  };
 
   return (
     <div className="relative bg-zinc-50  text-center text-surface dark:text-black pb-1 w-full">
@@ -236,6 +286,8 @@ function InputGoals() {
         <textarea
           id="message"
           rows={3}
+          value={illustration}
+          onChange={handleIllustrationChange}
           className="w-3/4 block p-2.5  text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300"
           placeholder="Write your illustrations here..."
         ></textarea>
@@ -253,6 +305,8 @@ function InputGoals() {
           <input
             type="text"
             id="calories"
+            value={calories}
+            onChange={handleCaloriesChange}
             className=" bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-xl focus:ring-blue-500 focus:border-blue-500 block w-40 p-2.5 dark:border-gray-300 dark:placeholder-gray-400 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500"
             placeholder="Calories..."
             required
@@ -269,6 +323,8 @@ function InputGoals() {
           <input
             type="text"
             id="calories"
+            value={protein}
+            onChange={handleProteinChange}
             className=" bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-xl focus:ring-blue-500 focus:border-blue-500 block w-40 p-2.5 dark:border-gray-300 dark:placeholder-gray-400 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500"
             placeholder="Protein..."
             required
@@ -285,6 +341,8 @@ function InputGoals() {
           <input
             type="text"
             id="calories"
+            value={carbs}
+            onChange={handleCarbsChange}
             className=" bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-xl focus:ring-blue-500 focus:border-blue-500 block w-40 p-2.5 dark:border-gray-300 dark:placeholder-gray-400 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500"
             placeholder="Carbs..."
             required
@@ -301,6 +359,8 @@ function InputGoals() {
           <input
             type="text"
             id="calories"
+            value={sugar}
+            onChange={handleSugarChange}
             className=" bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-xl block w-40 p-2.5 dark:border-gray-300 dark:placeholder-gray-400 dark:text-black "
             placeholder="Sugar..."
             required
@@ -309,6 +369,7 @@ function InputGoals() {
         <button
           type="button"
           className="mb-3 w-3/4 text-white bg-gray-800 hover:bg-gray-900 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 dark:bg-gray-800 dark:hover:bg-gray-700 dark:focus:ring-gray-700 dark:border-gray-700"
+          onClick={handleIllustrationSubmit}
         >
           Search
         </button>
