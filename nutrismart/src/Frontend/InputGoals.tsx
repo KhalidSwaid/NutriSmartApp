@@ -9,8 +9,8 @@ function InputGoals() {
   // States to manage the selected fil, prediction results, and errors
   const [file, setFile] = useState<File | null>(null);
   const [preview, setPreview] = useState<string | null>(null);
-  const [predictions, _setPredictions] = useState<string[]>([]);
-  const [_content, setContent] = useState<string | null>(null);
+  const [predictions, setPredictions] = useState<string[]>([]);
+  const [content, setContent] = useState<string[]>([]);
   const [illustration, setIllustration] = useState<string>("");
   const [error, setError] = useState<string | null>(null);
 
@@ -80,10 +80,10 @@ function InputGoals() {
 
     if (imageContent) {
       console.log(`Content of ${imageName}: ${imageContent}`);
-      setContent(imageContent);
 
       // Split the content by comma and send to the backend
       const contentArray = imageContent.split(",").map((item) => item.trim());
+      setContent(contentArray);
       console.log("Content Array:", contentArray);
 
       // Call the backend function to save the content
@@ -161,9 +161,12 @@ function InputGoals() {
 
       if (response.status === 200) {
         console.log("Response from Flask backend:", response.data);
-        const { file_name, file_content } = response.data; // Get the file name and content from the response
-        console.log("File Name:", file_name);
-        console.log("File Content:", file_content); // This is the base64 encoded content
+        // const { file_name, file_content } = response.data; // Get the file name and content from the response
+        // console.log("File Name:", file_name);
+        // console.log("File Content:", file_content); // This is the base64 encoded content
+        const { prediction } = response.data;
+        console.log("Prediction:", prediction);
+        setPredictions([prediction.label]);
         setError(null); // Clear any existing error
       } else {
         setError("Failed to upload file.");
@@ -193,6 +196,12 @@ function InputGoals() {
 
   // Handle illustration submission and input fields
   const handleIllustrationSubmit = () => {
+    // Check if all fields are empty
+    if (!file && !illustration && !calories && !protein && !carbs && !sugar) {
+      setError("You must choose your goal");
+      return;
+    }
+
     if (!illustration) {
       setError("Please provide some content in the illustration.");
       return;
@@ -206,8 +215,12 @@ function InputGoals() {
       Sugar: sugar,
     };
 
+    console.log("PREDICTIONS:", predictions);
+    console.log("CONTENT:", content);
+
     // Call the backend function to handle the illustration content and nutrition info
-    handleIllustrations(illustration, nutritionInfo);
+    let dataArray = handleIllustrations(illustration, nutritionInfo, content);
+    console.log("DATA ARRAY:", dataArray);
   };
 
   return (
