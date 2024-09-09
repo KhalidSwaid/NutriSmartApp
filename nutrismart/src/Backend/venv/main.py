@@ -156,7 +156,7 @@ def preprocess_image(image_path):
     return image
 
 def predict_food(image_path):
-    """Predict the contents of a food image."""
+    """Predict the contents of a food image and return the top prediction."""
     # Preprocess the image
     processed_image = preprocess_image(image_path)
     
@@ -164,13 +164,14 @@ def predict_food(image_path):
     predictions = model.predict(processed_image)
     
     # Decode predictions to get human-readable labels
-    decoded_predictions = tf.keras.applications.mobilenet_v2.decode_predictions(predictions, top=3)[0]
+    decoded_predictions = tf.keras.applications.mobilenet_v2.decode_predictions(predictions, top=1)[0]  # Get only top 1 prediction
     
-    # Extract the top predicted labels and their probabilities, convert probabilities to float
-    result = [(label, float(prob)) for (_, label, prob) in decoded_predictions]
+    # Extract the top predicted label and its probability
+    top_prediction = decoded_predictions[0]
+    label, probability = top_prediction[1], float(top_prediction[2])
     
-    # Return the predictions
-    return result
+    # Return the top prediction as a tuple
+    return (label, probability)
 
 @app.route("/upload_file", methods=['POST'])
 def upload_file():
@@ -196,7 +197,7 @@ def upload_file():
         
         # Predict the food in the image
         try:
-            predictions = predict_food(save_path)  # Use the new function for prediction
+            prediction = predict_food(save_path)  # Use the new function for prediction
 
             # Optional: Convert the image to base64 string (if you want to send the image back)
             with open(save_path, "rb") as image_file:
@@ -212,7 +213,10 @@ def upload_file():
                 "file_name": file_name,
                 "image_shape": image.shape,  # JSON serializable
                 "base64_image": base64_image,  # If needed
-                "predictions": predictions  # Predicted labels
+                "prediction": {
+                    "label": prediction[0],
+                    "probability": prediction[1]
+                }  # Only the top predicted label and its probability
             }), 200
 
         except Exception as e:
