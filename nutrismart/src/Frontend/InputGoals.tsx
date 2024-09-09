@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { getContent, handleIllustrations } from "../Backend/ContentProcessor";
+import { saveIllustrationToDatabase } from "../Backend/SaveIllustrationsToDatabase";
+import { useUserContext } from "../Frontend/UserContext";
 import axios from "axios";
 
 function InputGoals() {
@@ -18,6 +20,8 @@ function InputGoals() {
   const [protein, setProtein] = useState<string>("");
   const [carbs, setCarbs] = useState<string>("");
   const [sugar, setSugar] = useState<string>("");
+
+  const { userInfo } = useUserContext();
 
   // Mapping of image filenames to their content
   const imageContents: { [key: string]: string } = {
@@ -195,7 +199,7 @@ function InputGoals() {
     setSugar(event.target.value);
 
   // Handle illustration submission and input fields
-  const handleIllustrationSubmit = () => {
+  const handleIllustrationSubmit = async () => {
     // Check if all fields are empty
     if (!file && !illustration && !calories && !protein && !carbs && !sugar) {
       setError("You must choose your goal");
@@ -219,8 +223,19 @@ function InputGoals() {
     console.log("CONTENT:", content);
 
     // Call the backend function to handle the illustration content and nutrition info
-    let dataArray = handleIllustrations(illustration, nutritionInfo, content);
-    console.log("DATA ARRAY:", dataArray);
+    const newDataArray = handleIllustrations(
+      illustration,
+      nutritionInfo,
+      content,
+    );
+
+    // Now you have newDataArray that you can print, use, or process further
+    console.log("Final Data Array to be used:", newDataArray);
+
+    // Assuming you have a userId available (e.g., from authentication context)
+    const userId = userInfo.id; // Replace with actual user ID
+    // Save the data array to Firestore
+    await saveIllustrationToDatabase(userId, newDataArray);
   };
 
   return (
