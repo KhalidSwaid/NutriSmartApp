@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { getContent, handleIllustrations } from "../Backend/ContentProcessor";
+import axios from "axios";
 
 function InputGoals() {
   const navigate = useNavigate();
@@ -130,6 +131,49 @@ function InputGoals() {
   //   }
   // };
 
+  // New Function: Upload File to Backend (Flask)
+  const uploadFileToBackend = async () => {
+    if (!file) {
+      setError("Please select a file to upload.");
+      return;
+    }
+
+    const imageName = file.name;
+    if (imageContents[imageName]) {
+      handleUpload();
+      return;
+    }
+
+    const formData = new FormData();
+    formData.append("file", file);
+    console.log("FORM DATA:", file);
+
+    try {
+      const response = await axios.post(
+        "http://localhost:8080/upload_file",
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        },
+      );
+
+      if (response.status === 200) {
+        console.log("Response from Flask backend:", response.data);
+        const { file_name, file_content } = response.data; // Get the file name and content from the response
+        console.log("File Name:", file_name);
+        console.log("File Content:", file_content); // This is the base64 encoded content
+        setError(null); // Clear any existing error
+      } else {
+        setError("Failed to upload file.");
+      }
+    } catch (error: any) {
+      console.error("Error uploading file:", error);
+      setError(error.message || "Error uploading file.");
+    }
+  };
+
   // Handle illustration input change
   const handleIllustrationChange = (
     event: React.ChangeEvent<HTMLTextAreaElement>,
@@ -258,7 +302,7 @@ function InputGoals() {
       {/* Button to upload image and get predictions */}
       <button
         type="button"
-        onClick={handleUpload}
+        onClick={uploadFileToBackend}
         className="mt-5 mb-3 w-3/4 text-white bg-gray-800 hover:bg-gray-900 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 dark:bg-gray-800 dark:hover:bg-gray-700 dark:focus:ring-gray-700 dark:border-gray-700"
       >
         Upload and Predict

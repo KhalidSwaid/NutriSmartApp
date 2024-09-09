@@ -12,6 +12,7 @@
   "dependencies": {
     "@chatscope/chat-ui-kit-react": "^2.0.3",
     "@material-tailwind/react": "^2.1.9",
+    "axios": "^1.7.7",
     "body-parser": "^1.20.2",
     "concurrently": "^8.2.2",
     "cors": "^2.8.5",
