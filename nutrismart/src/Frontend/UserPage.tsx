@@ -144,7 +144,7 @@ function UserPage() {
                   onClick={handleInputMedicalConditionsButton}
                 >
                   <img
-                    src="../public/medical.jpg"
+                    src="/medical.jpg"
                     alt=""
                     className="w-8 h-8 mr-2 rounded-md stroke-1"
                   />
