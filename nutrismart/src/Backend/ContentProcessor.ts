@@ -44,3 +44,28 @@ export function handleIllustrations(
 export function getDataArray() {
   return dataArray;
 }
+
+export function handleMsgToSent(
+  dataArray: [string, string, string, string, string, string],
+): string | null {
+  // Check if all fields are filled with content (not "0")
+  if (
+    dataArray[0] !== "0" &&
+    dataArray[1] !== "0" &&
+    dataArray[2] !== "0" &&
+    dataArray[3] !== "0" &&
+    dataArray[4] !== "0" &&
+    dataArray[5] !== "0"
+  ) {
+    // Create a message in the specified format
+    const message = `${dataArray[1]}, I have a plate of: ${dataArray[0]}, I want to reach ${dataArray[2]} calories, ${dataArray[3]} protein, ${dataArray[4]} carbs, ${dataArray[5]} sugar.`;
+
+    console.log("Generated Message to Send:", message);
+    return message;
+  } else {
+    console.log(
+      "Some fields are missing or have zero values; cannot create a message.",
+    );
+    return null; // Return null if any field is missing or zero
+  }
+}

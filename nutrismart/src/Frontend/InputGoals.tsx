@@ -4,6 +4,8 @@ import { getContent, handleIllustrations } from "../Backend/ContentProcessor";
 import { saveIllustrationToDatabase } from "../Backend/SaveIllustrationsToDatabase";
 import { useUserContext } from "../Frontend/UserContext";
 import axios from "axios";
+import { sendMessageToOpenAI } from "../Backend/HandleAIMsg";
+import { handleMsgToSent } from "../Backend/ContentProcessor";
 
 function InputGoals() {
   const navigate = useNavigate();
@@ -20,6 +22,7 @@ function InputGoals() {
   const [protein, setProtein] = useState<string>("");
   const [carbs, setCarbs] = useState<string>("");
   const [sugar, setSugar] = useState<string>("");
+  const [openAIResponse, setOpenAIResponse] = useState<string | null>(null);
 
   const { userInfo } = useUserContext();
 
@@ -236,6 +239,18 @@ function InputGoals() {
     const userId = userInfo.id; // Replace with actual user ID
     // Save the data array to Firestore
     await saveIllustrationToDatabase(userId, newDataArray);
+
+    console.log("NEWDATAARRAY:", newDataArray);
+    const messageToSent = handleMsgToSent(newDataArray);
+    console.log("MESSAGE AFTER CONTENTPROCESSOR!", messageToSent);
+    const messageToSend: string = messageToSent || ""; // Ensure it's a string
+    try {
+      const responseMessage = await sendMessageToOpenAI(messageToSend); // No error now
+      setOpenAIResponse(responseMessage); // Set the OpenAI response in state
+    } catch (error) {
+      console.error("Error getting response from OpenAI:", error);
+      setError("Error getting response from OpenAI.");
+    }
   };
 
   return (
@@ -446,6 +461,12 @@ function InputGoals() {
           Search
         </button>
       </div>
+      {openAIResponse && (
+        <div className="mt-4">
+          <h3>OpenAI Response:</h3>
+          <p>{openAIResponse}</p>
+        </div>
+      )}
     </div>
   );
 }
