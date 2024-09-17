@@ -29,7 +29,7 @@ function InputGoals() {
     "4956.jpg": "fish",
     "1.jpg": "rice, bread",
     "200.jpg": "rice, salad",
-    "500.jpg": "rice, soup with meat",
+    "500.jpg": "rice, soup with meat and potato",
     "703.jpg": "rice",
     "8438.jpg": "chicken with vegetables",
     "97.jpg": "rice, crispy chicken",
