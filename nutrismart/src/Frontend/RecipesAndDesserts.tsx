@@ -116,7 +116,7 @@ const RecipesAndDesserts: React.FC = () => {
       <div className="flex justify-center mt-8">
         <button
           type="button"
-          className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
+          className="px-6 py-2 bg-black text-white rounded-lg hover:bg-gray-500"
           onClick={fetchRecipe}
         >
           Generate More Recipes
