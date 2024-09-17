@@ -152,7 +152,7 @@ function InputMedicalConditions() {
 
       <div className="relative px-8 py-1 mb-1">
         <img
-          src="../public/inputmedicalconditions.jpg"
+          src="/inputmedicalconditions.jpg"
           alt=""
           className="block w-full h-auto rounded-md"
         />
