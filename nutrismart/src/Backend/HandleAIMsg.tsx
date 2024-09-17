@@ -56,13 +56,3 @@ export async function sendMessageToOpenAI(message: string): Promise<string> {
     }
   }
 }
-
-// Example usage of the function
-(async () => {
-  const sentMessage = "What are the benefits of eating vegetables?";
-  console.log("Sent Message:", sentMessage);
-
-  // Send the message and get the response
-  const responseMessage = await sendMessageToOpenAI(sentMessage);
-  console.log("Response Message:", responseMessage);
-})();

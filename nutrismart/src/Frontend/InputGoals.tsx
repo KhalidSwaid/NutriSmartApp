@@ -241,7 +241,7 @@ function InputGoals() {
     await saveIllustrationToDatabase(userId, newDataArray);
 
     console.log("NEWDATAARRAY:", newDataArray);
-    const messageToSent = handleMsgToSent(newDataArray);
+    const messageToSent = await handleMsgToSent(newDataArray, userId);
     console.log("MESSAGE AFTER CONTENTPROCESSOR!", messageToSent);
     const messageToSend: string = messageToSent || ""; // Ensure it's a string
     try {

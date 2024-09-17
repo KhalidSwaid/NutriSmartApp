@@ -22,6 +22,8 @@ import NutritionistPage_ClientSide from "./NutritionistPage_ClientSide";
 import Terms from "./Terms";
 import PrivacyPolicy from "./PrivacyPolicy";
 
+import ResultPage from "./ResultsPage";
+
 const App: React.FC = () => {
   return (
     <Router>
@@ -34,6 +36,7 @@ const App: React.FC = () => {
           <Route path="/privacyPolicy" element={<PrivacyPolicy />} />
           <Route path="/userPage" element={<UserPage />} />
           <Route path="/inputGoals" element={<InputGoals />} />
+          <Route path="/resultsPage" element={<ResultPage />} />
           <Route
             path="/inputMedicalConditions"
             element={<InputMedicalConditions />}
