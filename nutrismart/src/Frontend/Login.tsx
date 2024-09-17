@@ -9,6 +9,8 @@ import { useUserContext } from "./UserContext";
 import { checkUserExists } from "../Backend/DatabaseUtils";
 import { saveUserToDatabase } from "../Backend/DatabaseUtils";
 
+import { Link } from "react-router-dom";
+
 const Login: React.FC = () => {
   const navigate = useNavigate();
   const { setUserInfo } = useUserContext();
@@ -223,10 +225,10 @@ const Login: React.FC = () => {
       </button>
       <div className="flex items-center justify-center mb-5">
         <hr className="mt-1 h-px bg-gray-200 border-1 dark:bg-gray-200 flex-grow ml-4 mr-1" />
-        <p className="text-gray-500">or continue with</p>
+        <p className="text-gray-500">or continue with Login</p>
         <hr className="mt-1 h-px bg-gray-200 border-1 dark:bg-gray-200 flex-grow ml-1 mr-4" />
       </div>
-      <button
+      {/* <button
         type="button"
         className="flex items-center justify-center mb-5 w-full text-black bg-gray-300 hover:bg-gray-900 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 dark:bg-gray-300 dark:hover:bg-gray-700 dark:focus:ring-gray-700 dark:border-gray-700"
       >
@@ -287,18 +289,18 @@ const Login: React.FC = () => {
           </g>{" "}
         </svg>
         <span className="font-bold">Google</span>
-      </button>
+      </button> */}
 
       <div className="flex items-center mt-4 text-xs justify-center mb-5">
         <p className="text-gray text-center">
           By clicking continue, you agree to our{" "}
-          <a href="/terms" className="font-bold">
+          <Link to="/terms" className="font-bold">
             Terms of Service
-          </a>{" "}
+          </Link>{" "}
           and{" "}
-          <a href="/privacy" className="font-bold">
+          <Link to="/privacyPolicy" className="font-bold">
             Privacy Policy
-          </a>
+          </Link>
           .
         </p>
       </div>
