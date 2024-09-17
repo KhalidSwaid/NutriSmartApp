@@ -15,6 +15,10 @@ const ResultPage: React.FC = () => {
     navigate("/userPageController");
   };
 
+  const handleSubmitButton = () => {
+    navigate("/userPageController");
+  };
+
   // Function to handle heart rating click
   const handleRating = (rate: number) => {
     setRating(rate);
@@ -46,7 +50,7 @@ const ResultPage: React.FC = () => {
       </button>
 
       {/* AI Response Section */}
-      <div className="flex flex-col items-center w-full">
+      <div className="mb-5 flex flex-col items-center w-full">
         <h1 className="text-2xl font-bold mb-5">Nutri Response</h1>
         <div className="bg-white p-6 rounded-lg shadow-lg max-w-2xl w-full">
           {/* Scrollable Response Container */}
@@ -90,6 +94,13 @@ const ResultPage: React.FC = () => {
           )}
         </div>
       </div>
+      <button
+        type="button"
+        className="ml-11 px-5 mb-3 w-3/4 text-white bg-gray-800 hover:bg-gray-900 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm py-2.5 me-2 dark:bg-gray-800 dark:hover:bg-gray-700 dark:focus:ring-gray-700 dark:border-gray-700"
+        onClick={handleSubmitButton}
+      >
+        Submit Rating
+      </button>
     </div>
   );
 };
