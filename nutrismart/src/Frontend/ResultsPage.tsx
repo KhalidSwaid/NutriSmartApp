@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom"; // Import useNavigate
-import { FaStar } from "react-icons/fa"; // Import star icons from react-icons
 
 const ResultPage: React.FC = () => {
   const location = useLocation();
@@ -16,10 +15,10 @@ const ResultPage: React.FC = () => {
     navigate("/userPageController");
   };
 
-  // Function to handle star rating click
+  // Function to handle heart rating click
   const handleRating = (rate: number) => {
     setRating(rate);
-    console.log(`Rated ${rate} stars`);
+    console.log(`Rated ${rate} hearts`);
   };
 
   return (
@@ -55,29 +54,39 @@ const ResultPage: React.FC = () => {
             <p className="text-lg">{response}</p>
           </div>
 
-          {/* Star Rating Section */}
+          {/* Heart Rating Section */}
           <div className="flex justify-center mt-4">
-            {[1, 2, 3, 4, 5].map((star) => (
+            {[1, 2, 3, 4, 5].map((heart) => (
               <button
-                key={star}
+                key={heart}
                 type="button"
-                onClick={() => handleRating(star)}
-                onMouseEnter={() => setHover(star)}
+                onClick={() => handleRating(heart)}
+                onMouseEnter={() => setHover(heart)}
                 onMouseLeave={() => setHover(null)}
               >
-                <FaStar
-                  size={30} // Correct way to pass size
-                  color={
-                    (hover ?? 0) >= star || (rating ?? 0) >= star
-                      ? "yellow"
-                      : "gray"
-                  } // Use color prop instead of className
-                />
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill={
+                    (hover ?? 0) >= heart || (rating ?? 0) >= heart
+                      ? "red"
+                      : "none"
+                  }
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                  className="w-8 h-8"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="2"
+                    d="M11.049 2.927c.3-1.184 1.912-1.184 2.212 0l.94 3.705a1 1 0 00.95.69h3.905c1.258 0 1.784 1.62.9 2.35l-2.984 2.442a1 1 0 00-.364 1.118l1.34 3.794c.424 1.199-.968 2.19-1.83 1.386l-3.117-2.855a1 1 0 00-1.285 0l-3.117 2.855c-.862.804-2.254-.187-1.83-1.386l1.34-3.794a1 1 0 00-.364-1.118L2.743 9.672c-.884-.73-.358-2.35.9-2.35h3.905a1 1 0 00.95-.69l.94-3.705z"
+                  />
+                </svg>
               </button>
             ))}
           </div>
           {rating && (
-            <p className="mt-2 text-sm text-gray-600">Rated {rating} stars!</p>
+            <p className="mt-2 text-sm text-gray-600">Rated {rating} Stars!</p>
           )}
         </div>
       </div>
