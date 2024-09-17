@@ -69,6 +69,10 @@ function UserPage() {
     navigate("/inputGoals");
   };
 
+  const handleRecipesAndDessertsButton = () => {
+    navigate("/recipesAndDesserts");
+  };
+
   const handleInputMedicalConditionsButton = () => {
     navigate("/inputMedicalConditions");
   };
@@ -187,13 +191,20 @@ function UserPage() {
                 </button>
               </li>
 
-              <li className="w-full md:w-1/4 h-16 border border-gray-200 rounded-md mb-2 md:mb-0 shadow-md">
-                <a
-                  href="#"
-                  className="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-black md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent"
+              <li className="w-full md:w-1/4 h-16 border border-gray-200 rounded-md mb-2 md:mb-0 flex justify-center items-center shadow-md">
+                <button
+                  type="button"
+                  className="flex items-center p-2 rounded md:bg-transparent md:p-0 dark:text-black hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 dark:hover:bg-gray-700 dark:hover:text-white"
+                  aria-current="page"
+                  onClick={handleRecipesAndDessertsButton} // Function to navigate to RecipesAndDesserts
                 >
-                  Dark/Light mode
-                </a>
+                  <img
+                    src="/recipes.jpg" // Change to an appropriate icon for "Recipes"
+                    alt="Recipes Icon"
+                    className="w-8 h-8 mr-2 rounded-md stroke-1"
+                  />
+                  <span className="ml-2 font-semibold">Recipes</span>
+                </button>
               </li>
               <li className="w-full md:w-1/4 h-16 border border-gray-200 border-opacity-30 rounded-md mb-2 md:mb-0 flex justify-center items-center shadow-md bg-white bg-opacity-20 backdrop-blur-md">
                 <button

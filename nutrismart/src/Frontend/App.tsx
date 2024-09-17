@@ -16,6 +16,8 @@ import OTPVerification from "./OTPage";
 
 import NSChatBot from "./NSChatBot";
 
+import RecipesAndDesserts from "./RecipesAndDesserts";
+
 import GuestPageController from "../Controllers/GuestPageController";
 import UserPageController from "../Controllers/UserPageController";
 import NutritionistPage_ClientSide from "./NutritionistPage_ClientSide";
@@ -45,6 +47,7 @@ const App: React.FC = () => {
           <Route path="/customizeMealPlan" element={<CustomizeMealPlan />} />
           {/* <Route path="/nutritionistChat" element={<NutritionistChat />} /> */}
           <Route path="/otpPage" element={<OTPVerification />} />
+          <Route path="/recipesAndDesserts" element={<RecipesAndDesserts />} />
           <Route path="/NSChatBot" element={<NSChatBot />} />
           <Route
             path="/guestPageController"
