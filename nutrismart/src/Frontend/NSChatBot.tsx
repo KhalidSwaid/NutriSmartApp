@@ -56,7 +56,8 @@ function NSChatBot() {
 
     const systemMessage = {
       role: "system",
-      content: "Explain all concepts like I am 10 years old.",
+      content:
+        "You are a nutritionist providing expert advice on nutrition, diet, and healthy eating habits. Answer all questions as a knowledgeable nutritionist.",
     };
 
     const apiRequestBody = {
