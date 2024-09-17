@@ -11,10 +11,12 @@ function InputMedicalConditions() {
   const { userInfo } = useUserContext();
   const [activeButton, setActiveButton] = useState<number | null>(null);
   const [illustrations, setIllustrations] = useState<string>("");
+  const [loading, setLoading] = useState(false);
+  const [successSubmitMessage, setSuccessSubmitMessage] = useState("");
 
   // Function to handle the "Back" button click
   const handleBackButton = () => {
-    navigate("/userPage");
+    navigate("/userPageController");
   };
 
   // Function to handle condition button clicks
@@ -38,6 +40,21 @@ function InputMedicalConditions() {
   const handleSubmit = async () => {
     try {
       await saveIllustrationsToFirestore(userInfo.id, illustrations); // Save illustrations to Firestore
+      setLoading(true);
+      setTimeout(() => {
+        setLoading(false); // Hide loading spinner
+        setSuccessSubmitMessage("Submit Successfully"); // Show success message
+
+        // After another 2 seconds, navigate to the specified page
+        setTimeout(() => {
+          setSuccessSubmitMessage(""); // Clear success message (optional)
+
+          // Wait 1 second and then navigate
+          setTimeout(() => {
+            navigate("/userPageController");
+          }, 1000);
+        }, 2000);
+      }, 2000);
       console.log("Illustrations saved successfully.");
     } catch (error) {
       console.error("Error saving illustrations:", error);
@@ -109,7 +126,7 @@ function InputMedicalConditions() {
         </button>
       </div> */}
 
-      <div className="flex flex-wrap justify-center space-x-2 mb-3">
+      <div className="flex flex-wrap justify-center space-x-2 mb-1">
         {[
           "Obesity",
           "Cardiovascular disease",
@@ -133,7 +150,7 @@ function InputMedicalConditions() {
         ))}
       </div>
 
-      <div className="relative px-8 py-3 mb-1">
+      <div className="relative px-8 py-1 mb-1">
         <img
           src="../public/inputmedicalconditions.jpg"
           alt=""
@@ -159,14 +176,28 @@ function InputMedicalConditions() {
         </div>
       </div>
 
-      <div className="flex flex-col items-center justify-center py-5">
+      <div className="flex flex-col items-center justify-center py-3">
         <button
           type="button"
-          className="mb-3 w-3/4 text-white bg-gray-800 hover:bg-gray-900 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 dark:bg-gray-800 dark:hover:bg-gray-700 dark:focus:ring-gray-700 dark:border-gray-700"
+          className="mb-2 w-3/4 text-white bg-gray-800 hover:bg-gray-900 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 dark:bg-gray-800 dark:hover:bg-gray-700 dark:focus:ring-gray-700 dark:border-gray-700"
           onClick={handleSubmit}
         >
           Submit
+          {loading && (
+            <div
+              className="animate-spin inline-block h-5 w-5 border-[3px] border-current border-t-transparent text-white rounded-full ml-2"
+              role="status"
+              aria-label="loading"
+            >
+              <span className="sr-only">Loading...</span>
+            </div>
+          )}
         </button>
+        {successSubmitMessage && (
+          <p className="text-green-500 mt-4 text-center">
+            {successSubmitMessage}
+          </p>
+        )}
       </div>
     </div>
   );
