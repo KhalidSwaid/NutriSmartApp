@@ -19,6 +19,8 @@ import NSChatBot from "./NSChatBot";
 import GuestPageController from "../Controllers/GuestPageController";
 import UserPageController from "../Controllers/UserPageController";
 import NutritionistPage_ClientSide from "./NutritionistPage_ClientSide";
+import Terms from "./Terms";
+import PrivacyPolicy from "./PrivacyPolicy";
 
 const App: React.FC = () => {
   return (
@@ -28,6 +30,8 @@ const App: React.FC = () => {
           <Route path="/" element={<Login />} />
           <Route path="/guest" element={<GuestPage />} />
           <Route path="/login" element={<UserLoginPage />} />
+          <Route path="/terms" element={<Terms />} />
+          <Route path="/privacyPolicy" element={<PrivacyPolicy />} />
           <Route path="/userPage" element={<UserPage />} />
           <Route path="/inputGoals" element={<InputGoals />} />
           <Route

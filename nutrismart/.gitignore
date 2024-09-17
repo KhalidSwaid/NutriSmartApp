@@ -15,6 +15,18 @@ dist-ssr
 # Environment files
 .env
 
+
+# Ignore best_module.hdf5 file in Backend directory
+/src/Backend/venv/best_model.hdf5
+/src/Backend/venv/Include
+/src/Backend/venv/Lib
+/src/Backend/venv/Scripts
+/src/Backend/venv/share
+/src/Backend/venv/yolov5
+/src/Backend/venv/27.jpg
+/src/Backend/venv/pyvenv.cfg
+
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json
