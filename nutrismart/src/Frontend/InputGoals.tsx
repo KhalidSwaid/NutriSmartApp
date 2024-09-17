@@ -263,7 +263,6 @@ function InputGoals() {
           {/* Image Upload Section */}
           <div className="relative px-24 py-3 mb-2">
             <img
-
               src="/vegetables.jpg"
               alt=""
               className="block w-full h-auto rounded-md blur-sm"
