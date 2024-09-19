@@ -78,3 +78,44 @@ export async function SaveRecipesToDatabase(
     console.error("Error saving recipe data to Firestore:", error);
   }
 }
+
+// Function to update the rating of a recipe
+export async function updateRecipeRating(
+  reason: string,
+  newRating: number,
+): Promise<void> {
+  try {
+    // Reference to the 'recipesAndDesserts' document in the 'recipes' collection
+    const recipeDocRef = doc(db, "recipes", "recipesAndDesserts");
+
+    // Get the current data for 'recipesAndDesserts'
+    const docSnapshot = await getDoc(recipeDocRef);
+
+    if (docSnapshot.exists()) {
+      const currentData = docSnapshot.data();
+
+      if (currentData && currentData[reason]) {
+        // Get the current rate
+        const currentRate = currentData[reason].rate || 0;
+
+        // Calculate the new rate
+        const updatedRate = currentRate + newRating;
+
+        // Update the document with the new rate
+        await updateDoc(recipeDocRef, {
+          [`${reason}.rate`]: updatedRate,
+        });
+
+        console.log(
+          `Recipe rate updated successfully for reason ${reason}. New rate: ${updatedRate}`,
+        );
+      } else {
+        console.error(`Recipe with reason ${reason} not found.`);
+      }
+    } else {
+      console.error(`Document 'recipesAndDesserts' does not exist.`);
+    }
+  } catch (error) {
+    console.error("Error updating recipe rating in Firestore:", error);
+  }
+}
