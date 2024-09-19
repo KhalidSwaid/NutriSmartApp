@@ -1,8 +1,18 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import {
+  addPlan,
+  addGoal,
+  addFoodType,
+  addIllustration,
+  saveSelectedGoalsToFirestore,
+} from "../Backend/GoalsManager"; // Import functions from GoalsManager.ts
+import { useUserContext } from "./UserContext";
 
 function CustomizeMealPlan() {
   const navigate = useNavigate();
+  const { userInfo } = useUserContext();
+
   const handleBackButton = () => {
     navigate("/userPageController");
   };
@@ -39,6 +49,7 @@ function CustomizeMealPlan() {
         buttonIndex,
       ]);
       setSelectedPlan((prevSelected) => [...prevSelected, selectedContent]);
+      addPlan(selectedContent, userInfo.id); // Call addPlan function
     }
   };
 
@@ -60,6 +71,7 @@ function CustomizeMealPlan() {
         buttonIndex,
       ]);
       setSelectedGoal((prevSelected) => [...prevSelected, selectedContent]);
+      addGoal(selectedContent, userInfo.id); // Call addGoal function
     }
   };
 
@@ -81,6 +93,7 @@ function CustomizeMealPlan() {
         buttonIndex,
       ]);
       setSelectedFoodType((prevSelected) => [...prevSelected, selectedContent]);
+      addFoodType(selectedContent, userInfo.id); // Call addFoodType function
     }
   };
 
@@ -94,6 +107,9 @@ function CustomizeMealPlan() {
   const handleSubmit = async () => {
     try {
       setLoading(true);
+      await addIllustration(illustrations, userInfo.id); // Save illustrations to Firestore
+      await saveSelectedGoalsToFirestore(userInfo.id); // Save all data to Firestore
+
       setTimeout(() => {
         setLoading(false); // Hide loading spinner
         setSuccessSubmitMessage("Submit Successfully"); // Show success message
