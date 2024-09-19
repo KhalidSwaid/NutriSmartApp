@@ -25,6 +25,7 @@ import Terms from "./Terms";
 import PrivacyPolicy from "./PrivacyPolicy";
 
 import ResultPage from "./ResultsPage";
+import BestRecipeOfTheMonth from "./BestRecipeOfTheMonth";
 
 const App: React.FC = () => {
   return (
@@ -37,6 +38,10 @@ const App: React.FC = () => {
           <Route path="/terms" element={<Terms />} />
           <Route path="/privacyPolicy" element={<PrivacyPolicy />} />
           <Route path="/userPage" element={<UserPage />} />
+          <Route
+            path="/bestRecipeOfTheMonth"
+            element={<BestRecipeOfTheMonth />}
+          />
           <Route path="/inputGoals" element={<InputGoals />} />
           <Route path="/resultsPage" element={<ResultPage />} />
           <Route
