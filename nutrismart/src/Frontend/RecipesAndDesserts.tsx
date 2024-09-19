@@ -4,6 +4,7 @@ import {
   sendMessageToOpenAI,
   getRandomReason,
 } from "../Backend/GenerateRecipesAndDesserts"; // Import functions from the TypeScript file
+import { SaveRecipesToDatabase } from "../Backend/SaveRecipesAndDessertsToDatabase";
 
 const RecipesAndDesserts: React.FC = () => {
   const navigate = useNavigate();
@@ -18,6 +19,8 @@ const RecipesAndDesserts: React.FC = () => {
     const content = await sendMessageToOpenAI(reason); // Fetch the recipe using OpenAI API
     setRecipes((prevRecipes) => [...prevRecipes, { reason, content }]); // Add the new recipe to the state
     setRatings((prevRatings) => [...prevRatings, 0]); // Initialize rating for the new recipe
+
+    SaveRecipesToDatabase(reason, content);
   };
 
   // Fetch a recipe when the component mounts
