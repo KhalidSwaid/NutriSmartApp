@@ -8,6 +8,15 @@ function GuestPage() {
   const handleBackButton = () => {
     navigate("/");
   };
+
+  const handleBestRecipeClick = () => {
+    navigate("/bestRecipeOfTheMonth");
+  };
+
+  const handleBestDessertClick = () => {
+    navigate("/bestDessertOfTheMonth");
+  };
+
   return (
     <div className="bg-zinc-50 px-6 pt-8 pb-10 text-center text-surface dark:text-black ">
       <div className="mb-2 text-3xl font-bold">
@@ -41,53 +50,58 @@ function GuestPage() {
             alt="Chicken Salad image with description"
             className=" rounded-xl w-full h-40"
           />
-          <div className="absolute inset-0  opacity-60 rounded-xl"></div>
-          <div className="absolute inset-0 flex items-top justify-start">
-            <h2
-              className="text-white text-2xl font-bold ml-2 mt-2"
-              //it's just a shadow for the text on the image, i felt it look like drawing and not real!
-              style={{
-                textShadow:
-                  "1px 1px 0 #000, -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000",
-              }}
+          <div className="absolute inset-0 opacity-30 rounded-xl"></div>
+          <div className="absolute top-0 left-0 p-2">
+            <button
+              className="focus:outline-none"
+              onClick={handleBestRecipeClick}
             >
-              Best recipe <br />
-              of the <br /> month
-            </h2>
+              <h2
+                className="text-white text-2xl font-bold "
+                //it's just a shadow for the text on the image, i felt it look like drawing and not real!
+                style={{
+                  textShadow:
+                    "1px 1px 0 #000, -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000",
+                }}
+              >
+                Best recipe <br />
+                of the <br /> month
+              </h2>
+            </button>
           </div>
           <div className="flex flex-col items-start">
-            <div className="font-bold text-sm  mt-1">Chicken Salad</div>
-            <p className="text-gray-400 text-xs mb-1">
-              vegies,low cal,gluten free
-            </p>
+            <div className="font-bold text-sm  mt-1">Recipe of the month</div>
+            <p className="text-gray-400 text-xs mb-1">Click to view!</p>
           </div>
         </div>
-
         <div className="w-7/12 rounded overflow-hidden shadow-lg relative">
           <img
             src="/pancake.jpg"
-            alt="Chicken Salad image with description"
-            className=" rounded-xl w-full h-40"
+            alt="Pancake image with description"
+            className="rounded-xl w-full h-40"
           />
-          <div className="absolute inset-0  opacity-60 rounded-xl"></div>
-          <div className="absolute inset-0 flex items-top justify-start">
-            <h2
-              className="text-white text-2xl font-bold ml-2 mt-2"
-              //I'ts just a shadow to the text, i felt it look drawing and not real!
-              style={{
-                textShadow:
-                  "1px 1px 0 #000, -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000",
-              }}
+          <div className="absolute inset-0 opacity-30 rounded-xl"></div>
+          <div className="absolute top-0 left-0 p-2">
+            <button
+              className="focus:outline-none"
+              onClick={handleBestDessertClick} // Add your click handler function here
             >
-              Best dessert <br />
-              of the <br /> month
-            </h2>
+              <h2
+                className="text-white text-2xl font-bold"
+                // It's just a shadow for the text on the image, to give a drawing effect
+                style={{
+                  textShadow:
+                    "1px 1px 0 #000, -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000",
+                }}
+              >
+                Best dessert <br />
+                of the <br /> month
+              </h2>
+            </button>
           </div>
-          <div className="flex flex-col items-start">
-            <div className="font-bold text-sm  mt-1">Pancake</div>
-            <p className="text-gray-400 text-xs mb-1">
-              High protiein,lower salt
-            </p>
+          <div className="flex flex-col items-start absolute bottom-2 left-2">
+            <div className="font-bold text-sm">Dessert of the month</div>
+            <p className="text-gray-400 text-xs">Click to view!</p>
           </div>
         </div>
       </div>

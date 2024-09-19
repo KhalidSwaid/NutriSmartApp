@@ -14,7 +14,7 @@ const BestDessertOfTheMonth: React.FC = () => {
 
   // Function to handle back button click
   const handleBackButton = () => {
-    navigate("/userPageController");
+    navigate(-1);
   };
 
   // Function to parse and split the recipe content into sections
