@@ -51,6 +51,10 @@ function UserPage() {
   // }, [userInfo.email]);
 
   // Show an alert only when userCount is 1 and reset the count afterward
+  // Function to navigate to BestRecipeOfTheMonth
+  const handleBestRecipeClick = () => {
+    navigate("/bestRecipeOfTheMonth");
+  };
 
   const handleHomeButton = async () => {
     try {
@@ -272,25 +276,28 @@ function UserPage() {
             alt="Chicken Salad image with description"
             className=" rounded-xl w-full h-40"
           />
-          <div className="absolute inset-0  opacity-60 rounded-xl"></div>
-          <div className="absolute inset-0 flex items-top justify-start">
-            <h2
-              className="text-white text-2xl font-bold ml-2 mt-2"
-              //it's just a shadow for the text on the image, i felt it look like drawing and not real!
-              style={{
-                textShadow:
-                  "1px 1px 0 #000, -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000",
-              }}
+          <div className="absolute inset-0 opacity-30 rounded-xl"></div>
+          <div className="absolute top-0 left-0 p-2">
+            <button
+              className="focus:outline-none"
+              onClick={handleBestRecipeClick}
             >
-              Best recipe <br />
-              of the <br /> month
-            </h2>
+              <h2
+                className="text-white text-2xl font-bold "
+                //it's just a shadow for the text on the image, i felt it look like drawing and not real!
+                style={{
+                  textShadow:
+                    "1px 1px 0 #000, -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000",
+                }}
+              >
+                Best recipe <br />
+                of the <br /> month
+              </h2>
+            </button>
           </div>
           <div className="flex flex-col items-start">
-            <div className="font-bold text-sm  mt-1">Chicken Salad</div>
-            <p className="text-gray-400 text-xs mb-1">
-              vegies,low cal,gluten free
-            </p>
+            <div className="font-bold text-sm  mt-1">Recipe of the month</div>
+            <p className="text-gray-400 text-xs mb-1">Click to view!</p>
           </div>
         </div>
 
