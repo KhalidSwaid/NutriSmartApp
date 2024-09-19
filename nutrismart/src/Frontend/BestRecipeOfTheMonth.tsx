@@ -17,6 +17,41 @@ const BestRecipeOfTheMonth: React.FC = () => {
     navigate("/userPageController");
   };
 
+  // Function to parse and split the recipe content
+  const parseRecipeContent = (content: string) => {
+    // Refined regex to match various spacing and line breaks
+    const nutritionRegex =
+      /Calories:\s?~?(\d+)\s?kcal.*?Protein:\s?~?(\d+)\s?g.*?Carbohydrates:\s?~?(\d+)\s?g.*?Fat:\s?~?(\d+)\s?g/;
+    const nutritionMatch = content.match(nutritionRegex);
+
+    const nutritionalInfo = nutritionMatch
+      ? {
+          calories: nutritionMatch[1],
+          protein: nutritionMatch[2],
+          carbs: nutritionMatch[3],
+          fat: nutritionMatch[4],
+        }
+      : {
+          calories: "Not provided",
+          protein: "Not provided",
+          carbs: "Not provided",
+          fat: "Not provided",
+        };
+
+    // Remove nutritional info from content to avoid duplication
+    const contentWithoutNutrition = content.replace(nutritionRegex, "");
+
+    // Now split the remaining content into ingredients and instructions
+    const [ingredientsPart, instructionsPart] =
+      contentWithoutNutrition.split("Cook the");
+
+    const instructionsSteps = instructionsPart
+      ? instructionsPart.split(". ").map((step) => step.trim())
+      : [];
+
+    return { ingredientsPart, instructionsSteps, nutritionalInfo };
+  };
+
   // Fetch the recipe of the month when the component mounts
   useEffect(() => {
     const fetchRecipe = async () => {
@@ -57,8 +92,55 @@ const BestRecipeOfTheMonth: React.FC = () => {
             <h1 className="text-3xl font-bold text-center text-gray-800 mb-4">
               Recipe of the Month: {recipe.name}
             </h1>
-            <p className="text-lg text-gray-700 mb-6">{recipe.content}</p>
-            <p className="text-xl font-semibold text-gray-800 text-center">
+            <div className="mb-6">
+              <h2 className="text-xl font-semibold text-gray-800">
+                Ingredients:
+              </h2>
+              <ul className="list-disc list-inside text-gray-700 mt-2">
+                {parseRecipeContent(recipe.content)
+                  .ingredientsPart.split(",")
+                  .map((ingredient, index) => (
+                    <li key={index}>{ingredient.trim()}</li>
+                  ))}
+              </ul>
+            </div>
+            <div>
+              <h2 className="text-xl font-semibold text-gray-800">
+                Instructions:
+              </h2>
+              <ol className="list-decimal list-inside text-gray-700 mt-2">
+                {parseRecipeContent(recipe.content).instructionsSteps.map(
+                  (step, index) => (
+                    <li key={index}>{step}</li>
+                  ),
+                )}
+              </ol>
+            </div>
+            <div className="mt-6">
+              <h2 className="text-xl font-semibold text-gray-800">
+                Nutritional Information:
+              </h2>
+              <ul className="list-disc list-inside text-gray-700 mt-2">
+                <li>
+                  Calories:{" "}
+                  {parseRecipeContent(recipe.content).nutritionalInfo.calories}{" "}
+                  kcal
+                </li>
+                <li>
+                  Protein:{" "}
+                  {parseRecipeContent(recipe.content).nutritionalInfo.protein} g
+                </li>
+                <li>
+                  Carbohydrates:{" "}
+                  {parseRecipeContent(recipe.content).nutritionalInfo.carbs} g
+                </li>
+                <li>
+                  Fat: {parseRecipeContent(recipe.content).nutritionalInfo.fat}{" "}
+                  g
+                </li>
+              </ul>
+            </div>
+            <p className="text-xl font-semibold text-gray-800 text-center mt-6">
               Rating: {recipe.rate} / 5
             </p>
           </>
