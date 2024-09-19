@@ -4,7 +4,10 @@ import {
   sendMessageToOpenAI,
   getRandomReason,
 } from "../Backend/GenerateRecipesAndDesserts"; // Import functions from the TypeScript file
-import { SaveRecipesToDatabase } from "../Backend/SaveRecipesAndDessertsToDatabase";
+import {
+  SaveRecipesToDatabase,
+  updateRecipeRating,
+} from "../Backend/SaveRecipesAndDessertsToDatabase";
 
 const RecipesAndDesserts: React.FC = () => {
   const navigate = useNavigate();
@@ -29,10 +32,14 @@ const RecipesAndDesserts: React.FC = () => {
   }, []);
 
   // Function to handle rating click
-  const handleRating = (index: number, rating: number) => {
+  const handleRating = async (index: number, rating: number) => {
     const newRatings = [...ratings];
     newRatings[index] = rating; // Update the rating for the specific recipe
     setRatings(newRatings);
+
+    // Update the rating in Firestore
+    const recipe = recipes[index];
+    await updateRecipeRating(recipe.reason, rating);
   };
 
   const handleBackButton = () => {

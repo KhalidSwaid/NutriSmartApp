@@ -1,8 +1,18 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import {
+  addPlan,
+  addGoal,
+  addFoodType,
+  addIllustration,
+  saveSelectedGoalsToFirestore,
+} from "../Backend/GoalsManager"; // Import functions from GoalsManager.ts
+import { useUserContext } from "./UserContext";
 
-function InputMedicalConditions() {
+function CustomizeMealPlan() {
   const navigate = useNavigate();
+  const { userInfo } = useUserContext();
+
   const handleBackButton = () => {
     navigate("/userPageController");
   };
@@ -13,66 +23,102 @@ function InputMedicalConditions() {
   const [activeButtonsSet2, setActiveButtonsSet2] = useState<number[]>([]);
   const [activeButtonsSet3, setActiveButtonsSet3] = useState<number[]>([]);
 
+  // Variables to store the content of selected buttons
+  const [selectedPlan, setSelectedPlan] = useState<string[]>([]);
+  const [selectedGoal, setSelectedGoal] = useState<string[]>([]);
+  const [selectedFoodType, setSelectedFoodType] = useState<string[]>([]);
+
+  // Variable to store illustrations/preferences typed by the user
+  const [illustrations, setIllustrations] = useState<string>("");
+
+  // Function to handle button click for Set 1 (Plan)
   const handleButtonClickSet1 = (buttonIndex: number) => {
-    // Check if the button is already active
     const isActive = activeButtonsSet1.includes(buttonIndex);
+    const selectedContent = buttonSets[0].buttons[buttonIndex];
 
     if (isActive) {
-      // Remove from active buttons if already active
       setActiveButtonsSet1((prevActiveButtons) =>
         prevActiveButtons.filter((btnIndex) => btnIndex !== buttonIndex),
       );
+      setSelectedPlan((prevSelected) =>
+        prevSelected.filter((item) => item !== selectedContent),
+      );
     } else {
-      // Add to active buttons if not active
       setActiveButtonsSet1((prevActiveButtons) => [
         ...prevActiveButtons,
         buttonIndex,
       ]);
+      setSelectedPlan((prevSelected) => [...prevSelected, selectedContent]);
+      addPlan(selectedContent, userInfo.id); // Call addPlan function
     }
   };
 
+  // Function to handle button click for Set 2 (Goal)
   const handleButtonClickSet2 = (buttonIndex: number) => {
-    // Check if the button is already active
     const isActive = activeButtonsSet2.includes(buttonIndex);
+    const selectedContent = buttonSets[1].buttons[buttonIndex];
 
     if (isActive) {
-      // Remove from active buttons if already active
       setActiveButtonsSet2((prevActiveButtons) =>
         prevActiveButtons.filter((btnIndex) => btnIndex !== buttonIndex),
       );
+      setSelectedGoal((prevSelected) =>
+        prevSelected.filter((item) => item !== selectedContent),
+      );
     } else {
-      // Add to active buttons if not active
       setActiveButtonsSet2((prevActiveButtons) => [
         ...prevActiveButtons,
         buttonIndex,
       ]);
+      setSelectedGoal((prevSelected) => [...prevSelected, selectedContent]);
+      addGoal(selectedContent, userInfo.id); // Call addGoal function
     }
   };
 
+  // Function to handle button click for Set 3 (Food Type)
   const handleButtonClickSet3 = (buttonIndex: number) => {
-    // Check if the button is already active
     const isActive = activeButtonsSet3.includes(buttonIndex);
+    const selectedContent = buttonSets[2].buttons[buttonIndex];
 
     if (isActive) {
-      // Remove from active buttons if already active
       setActiveButtonsSet3((prevActiveButtons) =>
         prevActiveButtons.filter((btnIndex) => btnIndex !== buttonIndex),
       );
+      setSelectedFoodType((prevSelected) =>
+        prevSelected.filter((item) => item !== selectedContent),
+      );
     } else {
-      // Add to active buttons if not active
       setActiveButtonsSet3((prevActiveButtons) => [
         ...prevActiveButtons,
         buttonIndex,
       ]);
+      setSelectedFoodType((prevSelected) => [...prevSelected, selectedContent]);
+      addFoodType(selectedContent, userInfo.id); // Call addFoodType function
     }
   };
+
+  // Function to handle the illustrations input change
+  const handleIllustrationsChange = (
+    event: React.ChangeEvent<HTMLTextAreaElement>,
+  ) => {
+    setIllustrations(event.target.value);
+  };
+
   const handleSubmit = async () => {
     try {
-      // await saveIllustrationsToFirestore(userInfo.id, illustrations); // Save illustrations to Firestore
       setLoading(true);
+      await addIllustration(illustrations, userInfo.id); // Save illustrations to Firestore
+      await saveSelectedGoalsToFirestore(userInfo.id); // Save all data to Firestore
+
       setTimeout(() => {
         setLoading(false); // Hide loading spinner
         setSuccessSubmitMessage("Submit Successfully"); // Show success message
+
+        // Log selected values
+        console.log("Selected Plan:", selectedPlan);
+        console.log("Selected Goal:", selectedGoal);
+        console.log("Selected Food Type:", selectedFoodType);
+        console.log("User Illustrations/Preferences:", illustrations);
 
         // After another 2 seconds, navigate to the specified page
         setTimeout(() => {
@@ -84,9 +130,9 @@ function InputMedicalConditions() {
           }, 1000);
         }, 2000);
       }, 2000);
-      console.log("Illustrations saved successfully.");
+      console.log("Data saved successfully.");
     } catch (error) {
-      console.error("Error saving illustrations:", error);
+      console.error("Error saving data:", error);
     }
   };
 
@@ -99,7 +145,7 @@ function InputMedicalConditions() {
       title: "Choose your goal",
       buttons: [
         "Gain weight",
-        "Lost weight",
+        "Lose weight",
         "Gain fat",
         "Lose fat",
         "Gain muscle mass",
@@ -123,7 +169,7 @@ function InputMedicalConditions() {
   ];
 
   return (
-    <div className="relative bg-zinc-50  text-center text-surface dark:text-black pb-1 w-full">
+    <div className="relative bg-zinc-50 text-center text-surface dark:text-black pb-1 w-full">
       <nav className="max-w-screen-xl flex items-center justify-between mx-auto p-5 bg-white relative z-10 mb-5">
         <button
           type="button"
@@ -191,11 +237,11 @@ function InputMedicalConditions() {
         </div>
       ))}
 
-      <div className=" flex items-center justify-center">
-        <div className="flex flex-col justify-center items-center bg-white bg-opacity-80 rounded-md">
+      <div className="flex items-center justify-center mb-5">
+        <div className="flex flex-col justify-center items-center bg-white bg-opacity-80 rounded-md p-4">
           <label
             htmlFor="message"
-            className="block  text-sm font-semibold text-gray-900 dark:text-black"
+            className="block text-sm font-semibold text-gray-900 dark:text-black mb-2"
           >
             Add more preferences
           </label>
@@ -204,6 +250,8 @@ function InputMedicalConditions() {
             rows={4}
             className="w-80 block p-2.5 text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300"
             placeholder="Add more preferences..."
+            value={illustrations}
+            onChange={handleIllustrationsChange}
           ></textarea>
         </div>
       </div>
@@ -234,4 +282,4 @@ function InputMedicalConditions() {
   );
 }
 
-export default InputMedicalConditions;
+export default CustomizeMealPlan;
