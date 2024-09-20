@@ -28,6 +28,7 @@ import ResultPage from "./ResultsPage";
 import BestRecipeOfTheMonth from "./BestRecipeOfTheMonth";
 import BestDessertOfTheMonth from "./BestDessertOfTheMonth";
 import CustomizeMealPlanResults from "./CustomizeMealPlanResults";
+import UserPlan from "./UserPlan";
 
 const App: React.FC = () => {
   return (
@@ -40,6 +41,7 @@ const App: React.FC = () => {
           <Route path="/terms" element={<Terms />} />
           <Route path="/privacyPolicy" element={<PrivacyPolicy />} />
           <Route path="/userPage" element={<UserPage />} />
+          <Route path="/userPlan" element={<UserPlan />} />
           <Route
             path="/bestRecipeOfTheMonth"
             element={<BestRecipeOfTheMonth />}
