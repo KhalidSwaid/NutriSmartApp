@@ -9,7 +9,6 @@ import { db } from "../Frontend/firebase";
 const NutritionistPage_ClientSide: React.FC = () => {
   const navigate = useNavigate();
   const [title, setTitle] = useState("");
-  const [email, setEmail] = useState("");
   const [content, setContent] = useState("");
   const [questions, setQuestions] = useState<Question[]>([]);
   const [containerHeight, setContainerHeight] = useState(0); // Start height
@@ -87,12 +86,11 @@ const NutritionistPage_ClientSide: React.FC = () => {
   }, [questions.length]);
 
   const handleAddQuestionButton = () => {
-    if (title && email && content) {
-      const newQuestion = { title, email, content };
+    if (title && content) {
+      const newQuestion = { title, email: userInfo.email, content };
       setQuestions([newQuestion, ...questions]);
       UpdateUserQuestions(userInfo, newQuestion); // Call the function to log user info and question
       setTitle("");
-      setEmail("");
       setContent("");
     }
   };
@@ -166,7 +164,7 @@ const NutritionistPage_ClientSide: React.FC = () => {
         </div>
       )}
 
-      <div className="px-5">
+      <div className="px-5 mt-5">
         <form
           action=""
           className="flex flex-col mb-4"
@@ -181,14 +179,6 @@ const NutritionistPage_ClientSide: React.FC = () => {
             type="text"
             value={title}
             onChange={(e) => setTitle(e.target.value)}
-            className="rounded-md mb-4"
-          />
-          <input
-            placeholder="Email"
-            required
-            type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
             className="rounded-md mb-4"
           />
           <textarea
