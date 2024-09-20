@@ -17,11 +17,6 @@ export const addCondition = async (condition: string, userId: string) => {
   }
 };
 
-//Here I Have to save selectedConditions to database, under users collection, under usersMedicalConditions,
-//We will save for each user an array that have the medical condition for the user, and array name
-//will be the user id like this:
-//"111222333": [Obesity, Cardiovascular disease, ...]
-
 // Function to get the current list of selected conditions
 export const getSelectedConditions = (): string[] => {
   return selectedConditions;
