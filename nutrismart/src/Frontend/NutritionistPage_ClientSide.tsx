@@ -157,7 +157,7 @@ const NutritionistPage_ClientSide: React.FC = () => {
                 X
               </button>
               <h2 className="text-xl font-bold">{question.title}</h2>
-              <h3 className="text-sm text-gray-600">{question.email}</h3>
+              {/* <h3 className="text-sm text-gray-600">{question.email}</h3> */}
               <p>{question.content}</p>
             </div>
           ))}
