@@ -106,6 +106,7 @@ function UserPage() {
 
   const handleButtonClick = (button: string) => {
     setActiveButton(button);
+    navigate("/userPlan");
   };
 
   const handleCombinedButtonClick = () => {
@@ -251,7 +252,7 @@ function UserPage() {
       </nav>
 
       <div className="flex justify-center mt-8 space-x-4 mb-5">
-        <button
+        {/* <button
           className={`py-1.5 px-3 rounded-full focus:outline-none ${
             activeButton === "search"
               ? "bg-black text-white"
@@ -260,6 +261,16 @@ function UserPage() {
           onClick={() => handleButtonClick("search")}
         >
           Search recipe
+        </button> */}
+        <button
+          className={`py-1.5 px-3 rounded-full focus:outline-none ${
+            activeButton === "search"
+              ? "bg-zinc-400 text-black dark:bg-zinc-200 dark:text-black"
+              : "bg-zinc-400 text-black dark:bg-zinc-200 dark:text-black"
+          }`}
+          onClick={() => handleButtonClick("search")}
+        >
+          My Plan
         </button>
         <button
           className={`py-1.5 px-3 rounded-full focus:outline-none ${
