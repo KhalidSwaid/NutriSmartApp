@@ -42,14 +42,6 @@ function UserPage() {
     checkAndAlert(); // Call the async function
   }, [userInfo.id, userInfo.email]);
 
-  // useEffect(() => {
-  //   if (!hasAlertShown.current) {
-  //     const userName = userInfo.email.split("@")[0];
-  //     alert(`Hello ${userName}`);
-  //     hasAlertShown.current = true;
-  //   }
-  // }, [userInfo.email]);
-
   // Show an alert only when userCount is 1 and reset the count afterward
   // Function to navigate to BestRecipeOfTheMonth
   const handleBestRecipeClick = () => {
@@ -252,16 +244,6 @@ function UserPage() {
       </nav>
 
       <div className="flex justify-center mt-8 space-x-4 mb-5">
-        {/* <button
-          className={`py-1.5 px-3 rounded-full focus:outline-none ${
-            activeButton === "search"
-              ? "bg-black text-white"
-              : "bg-zinc-400 text-black dark:bg-zinc-200 dark:text-black"
-          }`}
-          onClick={() => handleButtonClick("search")}
-        >
-          Search recipe
-        </button> */}
         <button
           className={`py-1.5 px-3 rounded-full focus:outline-none ${
             activeButton === "search"
