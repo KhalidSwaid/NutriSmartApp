@@ -27,6 +27,7 @@ import PrivacyPolicy from "./PrivacyPolicy";
 import ResultPage from "./ResultsPage";
 import BestRecipeOfTheMonth from "./BestRecipeOfTheMonth";
 import BestDessertOfTheMonth from "./BestDessertOfTheMonth";
+import CustomizeMealPlanResults from "./CustomizeMealPlanResults";
 
 const App: React.FC = () => {
   return (
@@ -55,6 +56,10 @@ const App: React.FC = () => {
           />
 
           <Route path="/customizeMealPlan" element={<CustomizeMealPlan />} />
+          <Route
+            path="/customizeMealPlanResults"
+            element={<CustomizeMealPlanResults />}
+          />
           {/* <Route path="/nutritionistChat" element={<NutritionistChat />} /> */}
           <Route path="/otpPage" element={<OTPVerification />} />
           <Route path="/recipesAndDesserts" element={<RecipesAndDesserts />} />
