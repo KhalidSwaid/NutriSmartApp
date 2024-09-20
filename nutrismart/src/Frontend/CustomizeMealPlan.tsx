@@ -9,6 +9,7 @@ import {
 } from "../Backend/GoalsManager"; // Import functions from GoalsManager.ts
 import { processMealPlanContent } from "../Backend/CustomizeMealPlanContentProcessor";
 import { sendMessageToOpenAI } from "../Backend/HandleAIMsg";
+import { saveCustomizedMealPlanToDatabase } from "../Backend/SaveCustomizeMealPlanToDatabase";
 import { useUserContext } from "./UserContext";
 
 function CustomizeMealPlan() {
@@ -125,6 +126,16 @@ function CustomizeMealPlan() {
       const aiReply = await sendMessageToOpenAI(message);
       setAiResponse(aiReply); // Save the AI response
       console.log("AI RESPONSE FROM CUSTOMIZEMEALPLAN:", aiReply);
+
+      // Save the customized meal plan to Firestore
+      await saveCustomizedMealPlanToDatabase(
+        userInfo.id,
+        selectedPlan,
+        selectedGoal,
+        selectedFoodType,
+        illustrations,
+        aiReply,
+      );
 
       setTimeout(() => {
         setLoading(false); // Hide loading spinner
