@@ -142,7 +142,9 @@ function CustomizeMealPlan() {
 
           // Wait 1 second and then navigate
           setTimeout(() => {
-            navigate("/userPageController");
+            navigate("/customizeMealPlanResults", {
+              state: { aiResponse: aiReply },
+            });
           }, 1000);
         }, 2000);
       }, 2000);
