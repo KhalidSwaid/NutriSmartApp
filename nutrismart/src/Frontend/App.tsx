@@ -1,29 +1,20 @@
-// import React from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import { UserProvider } from "./UserContext";
-
 import Login from "./Login";
 import GuestPage from "./GuestPage";
 import UserLoginPage from "./UserLoginPage";
 import UserPage from "./UserPage";
 import InputGoals from "./InputGoals";
-
 import InputMedicalConditions from "./InputMedicalConditions";
 import CustomizeMealPlan from "./CustomizeMealPlan";
-// import NutritionistChat from "./NutritionistChat";
-
 import OTPVerification from "./OTPage";
-
 import NSChatBot from "./NSChatBot";
-
 import RecipesAndDesserts from "./RecipesAndDesserts";
-
 import GuestPageController from "../Controllers/GuestPageController";
 import UserPageController from "../Controllers/UserPageController";
 import NutritionistPage_ClientSide from "./NutritionistPage_ClientSide";
 import Terms from "./Terms";
 import PrivacyPolicy from "./PrivacyPolicy";
-
 import ResultPage from "./ResultsPage";
 import BestRecipeOfTheMonth from "./BestRecipeOfTheMonth";
 import BestDessertOfTheMonth from "./BestDessertOfTheMonth";
@@ -62,7 +53,6 @@ const App: React.FC = () => {
             path="/customizeMealPlanResults"
             element={<CustomizeMealPlanResults />}
           />
-          {/* <Route path="/nutritionistChat" element={<NutritionistChat />} /> */}
           <Route path="/otpPage" element={<OTPVerification />} />
           <Route path="/recipesAndDesserts" element={<RecipesAndDesserts />} />
           <Route path="/NSChatBot" element={<NSChatBot />} />
@@ -78,8 +68,6 @@ const App: React.FC = () => {
         </Routes>
       </UserProvider>
     </Router>
-
-    // <OTPVerification />
   );
 };
 
