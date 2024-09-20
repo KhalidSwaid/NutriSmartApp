@@ -1,7 +1,4 @@
-//Continue with the cards, try to make the text on the image relative to the image, not to the div
 import { useNavigate } from "react-router-dom";
-// import chickenSaladImage from "../public/chicken-salad.jpg";
-// import panckaeImage from "../public/pancake.jpg";
 
 function GuestPage() {
   const navigate = useNavigate();
