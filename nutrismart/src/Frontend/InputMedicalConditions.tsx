@@ -102,30 +102,6 @@ function InputMedicalConditions() {
         </button>
       </nav>
 
-      {/* <div className="flex flex-wrap justify-center space-x-2 mb-3">
-        <button className="inline-block h-10 bg-blue-200 rounded-3xl shadow-lg hover:bg-blue-100 focus:outline-none mb-8 text-blue-900 font-semibold px-2">
-          Obesity
-        </button>
-        <button className="inline-block h-10 bg-blue-200 rounded-3xl shadow-lg hover:bg-blue-100 focus:outline-none mb-8 text-blue-900 font-semibold px-2">
-          Cardiovascular disease
-        </button>
-        <button className="inline-block h-10 bg-blue-200 rounded-3xl shadow-lg hover:bg-blue-100 focus:outline-none mb-8 text-blue-900 font-semibold px-2">
-          Hypertension
-        </button>
-        <button className="inline-block h-10 bg-blue-200 rounded-3xl shadow-lg hover:bg-blue-100 focus:outline-none mb-8 text-blue-900 font-semibold px-2">
-          Stroke
-        </button>
-        <button className="inline-block h-10 bg-blue-200 rounded-3xl shadow-lg hover:bg-blue-100 focus:outline-none mb-8 text-blue-900 font-semibold px-2">
-          Type 2 diabetes
-        </button>
-        <button className="inline-block h-10 bg-blue-200 rounded-3xl shadow-lg hover:bg-blue-100 focus:outline-none mb-8 text-blue-900 font-semibold px-2">
-          Metabolic Syndrome
-        </button>
-        <button className="inline-block h-10 bg-blue-200 rounded-3xl shadow-lg hover:bg-blue-100 focus:outline-none mb-8 text-blue-900 font-semibold px-2">
-          Cancer
-        </button>
-      </div> */}
-
       <div className="flex flex-wrap justify-center space-x-2 mb-1">
         {[
           "Obesity",
