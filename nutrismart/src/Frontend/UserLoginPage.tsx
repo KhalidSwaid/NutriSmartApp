@@ -1,14 +1,10 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-// import { collection, query, where, getDocs } from "firebase/firestore";
-// import { db, auth } from "./firebase"; // Assuming you have initialized your Firebase app and exported the 'db' instance
-// import { signInWithEmailAndPassword } from "firebase/auth";
 import {
   checkUserExists,
   checkCorrectPassword,
 } from "../Backend/DatabaseUtils";
 import { useUserContext } from "./UserContext";
-// import { Spinner } from "@material-tailwind/react";
 
 function UserLoginPage() {
   const navigate = useNavigate();
@@ -35,34 +31,6 @@ function UserLoginPage() {
       return;
     }
 
-    // try {
-    //   // Sign in the user with email and password
-    //   await signInWithEmailAndPassword(auth, email, password);
-
-    //   // Query Firestore after successful authentication
-    //   const usersRef = collection(db, "users");
-    //   const q = query(usersRef, where("email", "==", email));
-    //   const querySnapshot = await getDocs(q);
-
-    //   if (querySnapshot.empty) {
-    //     setErrorMessage("Email not found. Please sign up.");
-    //     return;
-    //   }
-
-    //   querySnapshot.forEach((doc) => {
-    //     const userData = doc.data();
-    //     if (userData.password !== password) {
-    //       setErrorMessage("Incorrect password. Please try again.");
-    //     } else {
-    //       // Password matches, proceed with login
-    //       navigate("/userPage");
-    //     }
-    //   });
-    // } catch (error) {
-    //   console.error("Error logging in:", error);
-    //   setErrorMessage("An error occurred while logging in.");
-    // }
-
     setLoading(true);
     setErrorMessage("");
     setSuccessLoginMessage("");
@@ -73,7 +41,6 @@ function UserLoginPage() {
 
       if (userExists) {
         // Sign in the user with email and password
-        // await signInWithEmailAndPassword(auth, email, password);
         if (!correctPassword) {
           setErrorMessage("Incorrect Password!");
           return;
@@ -88,15 +55,9 @@ function UserLoginPage() {
           setTimeout(() => {
             navigate("/userPageController");
           }, 1000);
-
-          // Navigate to user page
-          // navigate("/userPage");
         }, 2000);
         console.log("User Exists!");
         setSuccessLoginMessage("Welcome!");
-
-        // Navigate to user page
-        // navigate("/userPage");
       } else {
         setLoading(false);
         setErrorMessage("Email not found. Please sign up.");
@@ -174,10 +135,6 @@ function UserLoginPage() {
           required
         />
       </div>
-      {/* {successLoginMessage && (
-        <p className="text-green-500 mt-2">{successLoginMessage}</p>
-      )}
-      {errorMessage && <p className="text-red-500 mt-2">{errorMessage}</p>} */}
 
       <div className="mt-6 px-10 justify-center items-center">
         {successLoginMessage && (
