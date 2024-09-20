@@ -7,7 +7,6 @@ import UserPage from "./UserPage";
 import InputGoals from "./InputGoals";
 import InputMedicalConditions from "./InputMedicalConditions";
 import CustomizeMealPlan from "./CustomizeMealPlan";
-import OTPVerification from "./OTPage";
 import NSChatBot from "./NSChatBot";
 import RecipesAndDesserts from "./RecipesAndDesserts";
 import GuestPageController from "../Controllers/GuestPageController";
@@ -53,7 +52,6 @@ const App: React.FC = () => {
             path="/customizeMealPlanResults"
             element={<CustomizeMealPlanResults />}
           />
-          <Route path="/otpPage" element={<OTPVerification />} />
           <Route path="/recipesAndDesserts" element={<RecipesAndDesserts />} />
           <Route path="/NSChatBot" element={<NSChatBot />} />
           <Route
