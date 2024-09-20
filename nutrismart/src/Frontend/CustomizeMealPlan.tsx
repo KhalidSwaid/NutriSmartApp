@@ -7,6 +7,8 @@ import {
   addIllustration,
   saveSelectedGoalsToFirestore,
 } from "../Backend/GoalsManager"; // Import functions from GoalsManager.ts
+import { processMealPlanContent } from "../Backend/CustomizeMealPlanContentProcessor";
+import { sendMessageToOpenAI } from "../Backend/HandleAIMsg";
 import { useUserContext } from "./UserContext";
 
 function CustomizeMealPlan() {
@@ -18,6 +20,7 @@ function CustomizeMealPlan() {
   };
   const [loading, setLoading] = useState(false);
   const [successSubmitMessage, setSuccessSubmitMessage] = useState("");
+  const [_aiResponse, setAiResponse] = useState("");
 
   const [activeButtonsSet1, setActiveButtonsSet1] = useState<number[]>([]);
   const [activeButtonsSet2, setActiveButtonsSet2] = useState<number[]>([]);
@@ -109,6 +112,19 @@ function CustomizeMealPlan() {
       setLoading(true);
       await addIllustration(illustrations, userInfo.id); // Save illustrations to Firestore
       await saveSelectedGoalsToFirestore(userInfo.id); // Save all data to Firestore
+
+      // Process the meal plan content to generate a message
+      const message = processMealPlanContent({
+        selectedPlan,
+        selectedGoal,
+        selectedFoodType,
+        illustrations,
+      });
+
+      // Send the message to OpenAI and get the response
+      const aiReply = await sendMessageToOpenAI(message);
+      setAiResponse(aiReply); // Save the AI response
+      console.log("AI RESPONSE FROM CUSTOMIZEMEALPLAN:", aiReply);
 
       setTimeout(() => {
         setLoading(false); // Hide loading spinner
