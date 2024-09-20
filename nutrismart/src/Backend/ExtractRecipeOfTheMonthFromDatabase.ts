@@ -54,10 +54,3 @@ export async function getRecipeOfTheMonth(): Promise<{
     return null;
   }
 }
-
-// Usage example (remove this part if you're integrating with another file)
-// getRecipeOfTheMonth().then((recipe) => {
-//   if (recipe) {
-//     console.log("Recipe of the Month:", recipe);
-//   }
-// });
