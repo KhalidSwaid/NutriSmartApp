@@ -1,0 +1,21 @@
+# Ignore the virtual environment directory
+src/Backend/venv/
+
+# Ignore node_modules directory
+node_modules/
+
+# Ignore Python cache files
+__pycache__
+*.pyc
+
+# Ignore local environment variables
+.env
+
+# Ignore IDE-specific files
+.vscode/
+.idea/
+
+# Ignore logs and databases
+*.log
+*.sqlite3
+*.db
